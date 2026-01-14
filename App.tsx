@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import TechLab from './components/TechLab';
+import Services from './components/Services';
+import Founders from './components/Founders';
 import gsap from 'gsap';
 
 const App: React.FC = () => {
@@ -25,12 +27,9 @@ const App: React.FC = () => {
       <main>
         <Hero isDarkMode={isDarkMode} />
         <TechLab isDarkMode={isDarkMode} />
+        <Services isDarkMode={isDarkMode} />
+        <Founders isDarkMode={isDarkMode} />
       </main>
-      
-      {/* Footer fixed at bottom right or hidden for infinite feel */}
-      <footer className={`fixed bottom-4 right-6 text-[10px] pointer-events-none z-50 transition-colors duration-500 ${isDarkMode ? 'text-white/30' : 'text-black/30'}`}>
-        <p>&copy; {new Date().getFullYear()} Delphi Clone.</p>
-      </footer>
     </div>
   );
 };
