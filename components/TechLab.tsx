@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 
-interface AutomateSectionProps {
+interface TechLabProps {
   isDarkMode: boolean;
 }
 
-const AutomateSection: React.FC<AutomateSectionProps> = ({ isDarkMode }) => {
+const TechLab: React.FC<TechLabProps> = ({ isDarkMode }) => {
   const actionWords = ['Automate', 'Build', 'Deploy'];
   const targetWords = ['CRM', 'Dashboard', 'Workflow'];
   
@@ -127,4 +127,4 @@ const AutomateSection: React.FC<AutomateSectionProps> = ({ isDarkMode }) => {
   );
 };
 
-export default AutomateSection;
+export default TechLab;
