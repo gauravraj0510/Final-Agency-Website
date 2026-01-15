@@ -16,29 +16,29 @@ const lifecycleStages: LifecycleStage[] = [
         id: 1,
         name: "DISCOVERY",
         title: "Smart Analyzing",
-        description: "We assess your needs and identify AI solutions to streamline workflows and improve efficiency.",
-        position: { x: 15, y: 25 },
+        description: "Identify AI solutions to streamline workflows and improve efficiency.",
+        position: { x: 20, y: 15 },
     },
     {
         id: 2,
         name: "DEVELOPMENT",
         title: "AI Development",
-        description: "Our team builds intelligent automation systems tailored to your business processes.",
-        position: { x: 75, y: 25 },
+        description: "Build intelligent automation systems tailored to your business.",
+        position: { x: 75, y: 15 },
     },
     {
         id: 3,
         name: "INTEGRATION",
         title: "Seamless Integration",
-        description: "We smoothly integrate AI solutions into your existing infrastructure with minimal disruption.",
-        position: { x: 15, y: 70 },
+        description: "Integrate AI with minimal disruption to your infrastructure.",
+        position: { x: 20, y: 85 },
     },
     {
         id: 4,
         name: "OPTIMIZATION",
-        title: "Continuous Optimization",
-        description: "We refine performance, analyze insights, and enhance automation for long-term growth.",
-        position: { x: 75, y: 70 },
+        title: "Optimization",
+        description: "Refine performance and enhance automation for growth.",
+        position: { x: 75, y: 85 },
     }
 ];
 
@@ -534,20 +534,26 @@ export const CustomerLifecycleSection = () => {
                                             }}
                                             exit={{ opacity: 0, scale: 0.8 }}
                                             transition={{ duration: 0.5, ease: "easeOut" }}
-                                            className="absolute bg-purple-900/30 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-purple-500/30 shadow-lg"
+                                            className="absolute bg-[#0d0d0d] rounded-2xl p-4 sm:p-5 border border-gray-800 shadow-xl backdrop-blur-md"
                                             style={{
                                                 left: `${stage.position.x}%`,
                                                 top: `${stage.position.y}%`,
                                                 transform: 'translate(-50%, -50%)',
-                                                maxWidth: '160px'
+                                                width: '260px',
+                                                zIndex: 20
                                             }}
                                         >
-                                            <div className="text-[10px] sm:text-xs font-bold text-purple-400 mb-1 uppercase tracking-wider">
-                                                Step {stage.id}
+                                            <div className="flex items-center justify-between mb-2">
+                                                <div className="text-[10px] sm:text-xs font-bold text-purple-400 uppercase tracking-wider bg-purple-500/10 px-2 py-1 rounded">
+                                                    Step {stage.id}
+                                                </div>
                                             </div>
-                                            <div className="text-xs sm:text-sm font-semibold text-white">
+                                            <div className="text-sm sm:text-base font-bold text-white mb-2">
                                                 {stage.title}
                                             </div>
+                                            <p className="text-xs text-gray-400 leading-relaxed">
+                                                {stage.description}
+                                            </p>
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>

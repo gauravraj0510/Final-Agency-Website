@@ -129,7 +129,7 @@ const TechLab = () => {
           {/* Flip Text Heading - Clean, no boxes */}
           <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap mb-16">
             <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-              Hey Vellum,
+              Experience Delphi,
             </span>
 
             <FlipWord

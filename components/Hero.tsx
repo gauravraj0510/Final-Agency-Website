@@ -303,22 +303,25 @@ const Hero: React.FC = () => {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-0" />
 
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-        <div ref={contentRef} className="text-center flex flex-col items-center max-w-3xl px-6 pointer-events-auto">
+        <div ref={contentRef} className="text-center flex flex-col items-center max-w-4xl px-6 pointer-events-auto">
 
-          <h1 className="text-[5rem] md:text-[7rem] lg:text-[8rem] leading-[0.85] font-bold tracking-tighter mb-8 text-white">
-            Clone yourself.
+          <h1 className="text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] leading-[1.1] font-bold tracking-tight mb-8">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-white to-gray-500">Automation</span><br></br>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-white to-gray-500">
+              for Business
+            </span>
           </h1>
 
-          <p className="text-lg md:text-xl font-normal max-w-lg leading-relaxed mb-10 text-gray-400">
-            Build the digital version of you to scale your expertise and availability, <span className="text-purple-400 font-medium">infinitely</span>
+          <p className="text-lg md:text-xl font-normal max-w-2xl leading-relaxed mb-10 text-gray-400">
+            Delphi delivers comprehensive AI automation services using <span className="text-purple-400 font-medium">n8n workflows</span>, custom dashboards, and intelligent CRMs to scale your business.
           </p>
 
           <div className="flex items-center gap-6">
             <button className="rounded-full px-8 py-3.5 text-sm font-medium hover:scale-105 transition-all duration-300 bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25">
-              Try now
+              Start Automating
             </button>
             <button className="text-sm font-medium hover:opacity-70 transition-opacity flex items-center gap-1 text-white">
-              See examples <span>→</span>
+              View Services <span>→</span>
             </button>
           </div>
         </div>

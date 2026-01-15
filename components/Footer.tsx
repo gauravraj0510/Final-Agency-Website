@@ -157,7 +157,7 @@ const Footer = () => {
 
                 <div className="mt-16 pt-8 border-t border-gray-800/50 flex flex-col md:flex-row items-center justify-between gap-6">
                     <p className="text-sm text-gray-500">
-                        © 2026 FlowMax. All rights reserved.
+                        © 2026 Delphi. All rights reserved.
                     </p>
                     <div className="flex gap-8">
                         {['Privacy', 'Terms', 'Cookies'].map((item) => (
