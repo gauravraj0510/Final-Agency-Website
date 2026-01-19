@@ -3,6 +3,7 @@ import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import LogoMarquee from './components/LogoMarquee';
 import MetaScroll from './components/MetaScroll';
+import PinnedScrollSection from './components/PinnedScrollSection';
 
 import Founders from './components/Founders';
 import Footer from './components/Footer';
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Hero />
         <LogoMarquee />
         <MetaScroll />
+        <PinnedScrollSection />
 
         <Founders />
       </main>
