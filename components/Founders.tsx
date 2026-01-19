@@ -436,26 +436,41 @@ const Founders: React.FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-20 text-center">
+        <div className="mt-32 max-w-5xl mx-auto">
           <div
-            className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-6 rounded-2xl"
+            className="rounded-[2.5rem] p-12 md:p-20 text-center relative overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.05) 0%, rgba(124, 58, 237, 0.08) 100%)',
-              border: '1px solid rgba(168, 85, 247, 0.15)',
+              background: 'radial-gradient(100% 100% at 50% 0%, #1a1a1a 0%, #050505 100%)',
             }}
           >
-            <div className="text-center sm:text-left">
-              <p className="text-white font-semibold mb-1">Ready to transform your business?</p>
-              <p className="text-gray-400 text-sm">Let's discuss how we can help you scale.</p>
+            {/* Glow effects */}
+            <div className="absolute top-[-20%] left-[20%] right-[20%] h-[300px] bg-purple-500/10 blur-[100px] rounded-full pointer-events-none" />
+
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 relative z-10 leading-[1.1]">
+              Let AI do the Work so<br className="hidden md:block" />
+              you can Scale Faster
+            </h2>
+
+            <p className="text-gray-400 text-lg md:text-xl font-medium mb-10 relative z-10">
+              Book a Call Today and Start Automating
+            </p>
+
+            <div className="relative z-10">
+              <a
+                href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
+              >
+                Book a free call
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
             </div>
-            <button
-              className="px-6 py-3 rounded-xl font-medium text-white text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
-              style={{
-                background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
-              }}
-            >
-              Schedule a Call
-            </button>
+
+            {/* Subtle border */}
+            <div className="absolute inset-0 rounded-[2.5rem] border border-white/5 pointer-events-none" />
           </div>
         </div>
       </div>

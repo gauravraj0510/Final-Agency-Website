@@ -24,7 +24,7 @@ const App: React.FC = () => {
         <Hero />
         <LogoMarquee />
         <MetaScroll />
-        {/* <Services /> */}
+        <Services />
         <Founders />
       </main>
       <Footer />
