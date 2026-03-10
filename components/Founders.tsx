@@ -15,7 +15,7 @@ const Founders: React.FC = () => {
   const founders = [
     {
       id: 1,
-      name: 'Alex Chen',
+      name: 'Adarsh Tiwari',
       title: 'Co-Founder & CEO',
       tagline: 'Building the future of automation',
       bio: 'Former Google engineer with 10+ years building scalable systems. Led teams that shipped products to 100M+ users. Now democratizing AI for businesses of all sizes.',
@@ -30,7 +30,7 @@ const Founders: React.FC = () => {
     },
     {
       id: 2,
-      name: 'Sarah Mitchell',
+      name: 'Gaurav Raj',
       title: 'Co-Founder & CTO',
       tagline: 'Architecting tomorrow\'s infrastructure',
       bio: 'Ex-Meta tech lead specializing in distributed systems and ML infrastructure. Built systems processing 1B+ events daily. Passionate about elegant, scalable solutions.',

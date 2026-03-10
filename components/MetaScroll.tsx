@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, type CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Box, Gauge, FileText, RefreshCcw, FileCode, Search, Settings, MessageSquare, Workflow, TrendingUp, CheckCircle2 } from 'lucide-react';
 
@@ -329,7 +329,7 @@ export const CustomerLifecycleSection = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const getContentStyle = (): React.CSSProperties => {
+    const getContentStyle = (): CSSProperties => {
         if (isFixed) {
             return {
                 position: 'fixed',
@@ -405,8 +405,8 @@ export const CustomerLifecycleSection = () => {
                     {/* Section Header */}
                     <div className="text-center mb-10">
                         <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-                            Drive value across the{" "}
-                            <span className="text-purple-400">customer lifecycle</span>
+                            Turn customer data into{" "}
+                            <span className="text-purple-400">AI-driven growth</span>
                         </h2>
                         <p className="text-gray-400 text-sm">
                             Each touchpoint is a revenue opportunity
@@ -466,8 +466,8 @@ export const CustomerLifecycleSection = () => {
                             <div className="space-y-8 text-white">
                                 <div className="space-y-4">
                                     <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-                                        Drive value across the{" "}
-                                        <span className="text-purple-400">customer lifecycle</span>
+                                        Turn customer data into{" "}
+                                        <span className="text-purple-400">AI-driven growth</span>
                                     </h2>
 
                                     <div className="space-y-4">
@@ -482,9 +482,7 @@ export const CustomerLifecycleSection = () => {
                                         </div>
 
                                         <p className="text-base sm:text-lg leading-relaxed text-gray-400 max-w-lg">
-                                            At each stage, Business Messaging plays a pivotal role,
-                                            unblocking cost savings and new revenue opportunities while
-                                            emphasizing retention.
+                                            We audit your data and workflows, automate what slows teams down, build custom AI solutions that fit your stack, and continuously optimize operations as you scale.
                                         </p>
                                     </div>
                                 </div>
