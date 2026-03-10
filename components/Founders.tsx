@@ -396,17 +396,15 @@ const Founders: React.FC = () => {
             </h2>
 
             <p className="text-gray-400 text-lg md:text-xl font-medium mb-10 relative z-10">
-              Book a Call Today and Start Automating
+              Take a quick assessment and get a clear AI action plan for your business
             </p>
 
             <div className="relative z-10">
               <a
-                href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/questionnaire"
                 className="inline-flex items-center gap-2 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
               >
-                Book a free call
+                Take the assessment
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>

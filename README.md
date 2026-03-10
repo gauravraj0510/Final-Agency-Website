@@ -1,4 +1,3 @@
-- Landing page with Questionnaire CTA
-- Offerings
+## Landing Page ToDos:
 - Credibility
 - Case Studies
