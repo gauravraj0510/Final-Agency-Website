@@ -16,7 +16,7 @@ const LogoMarquee: React.FC = () => {
   const duplicatedLogos = [...logos, ...logos];
 
   return (
-    <section className="relative pt-[12rem] pb-0 bg-[#050505] overflow-hidden">
+    <section className="relative pt-[4rem] pb-0 bg-[#050505] overflow-hidden">
       {/* Heading */}
       <p className="text-center text-white font-bold text-xl mb-6 tracking-wide">
         Over 50+ businesses trust us

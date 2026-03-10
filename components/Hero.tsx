@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
     const d = SEGMENT_DEPTH;
 
     // Purple-tinted grid lines for dark theme
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.4 });
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.85 });
     const lineGeo = new THREE.BufferGeometry();
     const vertices: number[] = [];
 
@@ -301,34 +301,30 @@ const Hero: React.FC = () => {
   return (
     <div ref={containerRef} className="relative w-full h-screen bg-[#050505]">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-0" />
+      <div className="absolute inset-0 z-[5] bg-black/50 pointer-events-none" aria-hidden />
 
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
         <div ref={contentRef} className="text-center flex flex-col items-center max-w-4xl px-6 pointer-events-auto">
 
-          <h1 className="text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] leading-[1.1] font-bold tracking-tight mb-8">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-white to-gray-500">Automation</span><br></br>
+          <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] leading-[1.15] font-bold tracking-tight mb-6 max-w-4xl">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-white to-gray-500">
-              for Business
+              Struggling to leverage AI in your business?
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl font-normal max-w-2xl leading-relaxed mb-10 text-gray-400">
-            Delphi delivers comprehensive AI automation services using <span className="text-purple-400 font-medium">n8n workflows</span>, custom dashboards, and intelligent CRMs to scale your business.
+
+          <p className="text-base md:text-lg font-normal max-w-xl leading-relaxed mb-6 text-gray-400">
+            Tell us where you're stuck—take a quick assessment and we'll show you the next step.
           </p>
 
-          <div className="flex items-center gap-6">
-            <a
-              href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full px-8 py-3.5 text-sm font-medium hover:scale-105 transition-all duration-300 bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25"
-            >
-              Start Automating
-            </a>
-            <button className="text-sm font-medium hover:opacity-70 transition-opacity flex items-center gap-1 text-white">
-              View Services <span>→</span>
-            </button>
-          </div>
+          <a
+            href="/questionnaire"
+            className="rounded-full px-8 py-3.5 text-sm font-medium hover:scale-105 transition-all duration-300 bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25 mb-8"
+          >
+            Take the assessment
+          </a>
+
+          
         </div>
       </div>
     </div>
