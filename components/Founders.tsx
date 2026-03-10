@@ -19,7 +19,7 @@ const Founders: React.FC = () => {
       title: 'Co-Founder & CEO',
       tagline: 'Building the future of automation',
       bio: 'Former Google engineer with 10+ years building scalable systems. Led teams that shipped products to 100M+ users. Now democratizing AI for businesses of all sizes.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&fit=crop',
+      image: 'https://media.licdn.com/dms/image/v2/D4D03AQEQ8T07GErthw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715710002535?e=1774483200&v=beta&t=R8URHT6pBoH6SeLgABdkNMkif9XpE0Et3l0goddpci4',
       achievements: ['Ex-Google', '100M+ Users', '15+ Patents'],
       icon: Brain,
       socials: {
@@ -34,7 +34,7 @@ const Founders: React.FC = () => {
       title: 'Co-Founder & CTO',
       tagline: 'Architecting tomorrow\'s infrastructure',
       bio: 'Ex-Meta tech lead specializing in distributed systems and ML infrastructure. Built systems processing 1B+ events daily. Passionate about elegant, scalable solutions.',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&fit=crop',
+      image: 'https://media.licdn.com/dms/image/v2/D4D03AQFmJSApcxS2fw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1668356735548?e=1774483200&v=beta&t=v70I2ld9ogUjb_tZRsBdELmDvzuJ1koEFQgSH2IpgGg',
       achievements: ['Ex-Meta', '1B+ Events/Day', 'Stanford CS'],
       icon: Code2,
       socials: {
