@@ -15,29 +15,29 @@ const lifecycleStages: LifecycleStage[] = [
     {
         id: 1,
         name: "DISCOVERY",
-        title: "Smart Analyzing",
-        description: "Identify AI solutions to streamline workflows and improve efficiency.",
+        title: "AI Auditing",
+        description: "Assess your current systems and processes to identify AI readiness, gaps, and high-impact opportunities.",
         position: { x: 0, y: 15 },
     },
     {
         id: 2,
         name: "DEVELOPMENT",
-        title: "AI Development",
-        description: "Build intelligent automation systems tailored to your business.",
+        title: "AI Automations",
+        description: "Design and deploy intelligent workflows that handle repetitive tasks and scale with your business.",
         position: { x: 55, y: 15 },
     },
     {
         id: 3,
         name: "INTEGRATION",
-        title: "Seamless Integration",
-        description: "Integrate AI with minimal disruption to your infrastructure.",
+        title: "Custom AI Solutions",
+        description: "Tailored AI systems built to fit your stack from chatbots and CRMs to data pipelines and integrations.",
         position: { x: 0, y: 60 },
     },
     {
         id: 4,
         name: "OPTIMIZATION",
-        title: "Optimization",
-        description: "Refine performance and enhance automation for growth.",
+        title: "Operations Optimization",
+        description: "Refine performance, monitor health, and continuously enhance your automation so it keeps delivering as you grow.",
         position: { x: 55, y: 60 },
     }
 ];
@@ -426,7 +426,7 @@ export const CustomerLifecycleSection = () => {
                             >
                                 {/* Step badge */}
                                 <span className="inline-block px-4 py-1.5 bg-[#1a1a1a] border border-gray-700 rounded-lg text-gray-400 text-sm font-medium mb-6">
-                                    Step {stage.id}
+                                    Offering #{stage.id}
                                 </span>
 
                                 {/* Title */}
@@ -545,7 +545,7 @@ export const CustomerLifecycleSection = () => {
                                         >
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="text-[10px] sm:text-xs font-bold text-purple-400 uppercase tracking-wider bg-purple-500/10 px-2 py-1 rounded">
-                                                    Step {stage.id}
+                                                    Offering #{stage.id}
                                                 </div>
                                             </div>
                                             <div className="text-sm sm:text-base font-bold text-white mb-2">
