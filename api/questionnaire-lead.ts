@@ -1,5 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import * as admin from "firebase-admin";
+import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 
 /** Read raw body from request stream (fallback when req.body is not set, e.g. on some Vercel runtimes). */
 function readBody(req: IncomingMessage): Promise<string> {
@@ -11,9 +13,9 @@ function readBody(req: IncomingMessage): Promise<string> {
   });
 }
 
-// Initialize Firebase Admin from individual env vars (no JSON blob)
-function getFirestore(): admin.firestore.Firestore {
-  if (!admin.apps?.length) {
+// Initialize Firebase Admin from individual env vars (modular API avoids admin.credential undefined in some runtimes)
+function getFirestoreInstance(): ReturnType<typeof getFirestore> {
+  if (!getApps()?.length) {
     const projectId = process.env.FIREBASE_PROJECT_ID?.trim();
     const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim();
     let privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim();
@@ -22,24 +24,21 @@ function getFirestore(): admin.firestore.Firestore {
     if (!clientEmail) throw new Error("FIREBASE_CLIENT_EMAIL env var is not set.");
     if (!privateKey) throw new Error("FIREBASE_PRIVATE_KEY env var is not set.");
 
-    // Env vars often store newlines as literal \n
     if (privateKey.includes("\\n")) {
       privateKey = privateKey.replace(/\\n/g, "\n");
     }
 
-    const credential = admin.credential.cert({
-      projectId,
-      clientEmail,
-      privateKey,
-    });
-
-    admin.initializeApp({
-      credential,
+    initializeApp({
+      credential: cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
       projectId,
     });
   }
 
-  return admin.firestore();
+  return getFirestore();
 }
 
 type AnyObject = Record<string, unknown>;
@@ -157,9 +156,9 @@ export default async function handler(
       return;
     }
 
-    let firestore: admin.firestore.Firestore;
+    let firestore: ReturnType<typeof getFirestore>;
     try {
-      firestore = getFirestore();
+      firestore = getFirestoreInstance();
     } catch (initErr: unknown) {
       const msg = initErr instanceof Error ? initErr.message : String(initErr);
       console.error("Firebase init error:", msg);
@@ -190,7 +189,7 @@ export default async function handler(
         ip: ip ?? null,
         userAgent: userAgent ?? null,
       },
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     });
 
     try {
