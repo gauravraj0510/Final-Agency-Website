@@ -147,15 +147,24 @@ const QuestionnairePage: React.FC = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`Request failed with status ${res.status}`);
+        let apiMessage = `Request failed with status ${res.status}`;
+        try {
+          const data = await res.json();
+          if (data?.message) apiMessage = data.message;
+          else if (data?.error) apiMessage = data.error;
+          if (data?.code) apiMessage = `[${data.code}] ${apiMessage}`;
+        } catch {
+          // ignore if response isn't JSON
+        }
+        throw new Error(apiMessage);
       }
 
       setStepState("success");
     } catch (err) {
       console.error(err);
-      setErrorMessage(
-        "Something went wrong while saving your responses. Please try again in a moment."
-      );
+      const message =
+        err instanceof Error ? err.message : "Something went wrong while saving your responses. Please try again in a moment.";
+      setErrorMessage(message);
       setStepState("error");
     }
   };
