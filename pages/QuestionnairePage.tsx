@@ -63,12 +63,18 @@ const QuestionnairePage: React.FC = () => {
         : [];
       const otherKey = `${currentQuestion.id}__other`;
       const otherVal = (answers[otherKey] as string | undefined)?.trim?.() ?? "";
-      // Q6 (leadFollowup): allow "Add a bit more detail" text alone if no option applies
       const detailVal =
         currentQuestion.id === "leadFollowup"
           ? (answers["leadFollowup_details"] as string | undefined)?.trim?.() ?? ""
           : "";
       return arr.length > 0 || otherVal.length > 0 || detailVal.length > 0;
+    }
+
+    if (currentQuestion.type === "single-select") {
+      const optionSelected = typeof raw === "string" && raw.length > 0;
+      const otherKey = `${currentQuestion.id}__other`;
+      const otherVal = (answers[otherKey] as string | undefined)?.trim?.() ?? "";
+      return optionSelected || otherVal.length > 0;
     }
 
     const str = (raw ?? "") as string;
@@ -116,6 +122,30 @@ const QuestionnairePage: React.FC = () => {
     }
   };
 
+  const getNormalizedAnswers = (): Record<string, string | string[]> => {
+    const out: Record<string, string | string[]> = {};
+    questions.forEach((q) => {
+      const id = q.id;
+      const main = answers[id];
+      const otherKey = `${id}__other`;
+      const other = answers[otherKey] as string | undefined;
+      const otherVal = typeof other === "string" ? other.trim() : "";
+      if (q.type === "single-select") {
+        const optionVal = typeof main === "string" ? main : "";
+        out[id] = optionVal || otherVal;
+      } else if (q.type === "multi-select") {
+        const arr = Array.isArray(main) ? main : typeof main === "string" && main ? [main] : [];
+        out[id] = otherVal ? [...arr, otherVal] : arr;
+      } else {
+        out[id] = (typeof main === "string" ? main : Array.isArray(main) ? main : "") as string | string[];
+      }
+    });
+    if (answers.leadFollowup_details !== undefined) {
+      out.leadFollowup_details = String(answers.leadFollowup_details);
+    }
+    return out;
+  };
+
   const handleSubmit = async () => {
     if (!validateCurrent()) {
       setErrorMessage("Please complete this question before submitting.");
@@ -129,9 +159,11 @@ const QuestionnairePage: React.FC = () => {
         email: answers["email"] ?? "",
       };
 
+      const normalizedAnswers = getNormalizedAnswers();
+
       const payload = {
         lead,
-        answers,
+        answers: normalizedAnswers,
         meta: {
           userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -169,9 +201,78 @@ const QuestionnairePage: React.FC = () => {
     }
   };
 
+  const handleSingleSelect = (value: string) => {
+    const otherKey = `${currentQuestion.id}__other`;
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: value,
+      [otherKey]: "",
+    }));
+  };
+
   const renderField = () => {
     const raw = answers[currentQuestion.id];
     const singleValue = (typeof raw === "string" ? raw : "") ?? "";
+
+    if (currentQuestion.type === "single-select" && currentQuestion.options) {
+      const selectedValue = typeof raw === "string" ? raw : "";
+      const optionValues = currentQuestion.options.map((o) => o.value);
+      const optionSelected = optionValues.includes(selectedValue);
+      const otherKey = `${currentQuestion.id}__other`;
+      const otherVal = (answers[otherKey] as string | undefined) ?? "";
+      return (
+        <div className="space-y-4">
+          <div className="space-y-3">
+            {currentQuestion.options.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  if (selectedValue === opt.value) {
+                    setAnswers((prev) => ({
+                      ...prev,
+                      [currentQuestion.id]: "",
+                      [otherKey]: "",
+                    }));
+                  } else {
+                    handleSingleSelect(opt.value);
+                  }
+                }}
+                className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${
+                  selectedValue === opt.value
+                    ? "border-purple-500 bg-purple-500/10"
+                    : "border-white/10 hover:border-purple-400/60"
+                }`}
+              >
+                <span className="text-sm text-white/90">{opt.label}</span>
+              </button>
+            ))}
+          </div>
+          {currentQuestion.allowOtherText && (
+            <div className="space-y-1">
+              <label className="text-xs text-white/60">
+                Other (if none of the above)
+              </label>
+              <input
+                type="text"
+                disabled={optionSelected}
+                className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/80 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                placeholder="Type your own answer"
+                value={otherVal}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setAnswers((prev) => ({
+                    ...prev,
+                    [otherKey]: v,
+                    ...(v ? { [currentQuestion.id]: "" } : {}),
+                  }));
+                }}
+              />
+            </div>
+          )}
+        </div>
+      );
+    }
 
     if (currentQuestion.type === "multi-select" && currentQuestion.options) {
       const selectedValues: string[] = Array.isArray(raw)

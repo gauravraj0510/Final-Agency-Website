@@ -181,7 +181,7 @@ This reveals **analytics opportunity**.
 ## 6. Scalability
 
 **Q11**
-If your business suddenly got **3× more customers**, what would break first?
+If your business suddenly got **3× more customers**, what would break?
 
 Examples:
 

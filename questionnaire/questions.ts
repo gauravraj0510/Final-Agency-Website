@@ -41,7 +41,7 @@ export const questions: Question[] = [
     section: "Business basics",
     title: "What industry is your business in?",
     helper: "E.g. Healthcare, Real Estate, Ecommerce, Manufacturing, Services.",
-    type: "multi-select",
+    type: "single-select",
     options: [
       { value: "healthcare", label: "Healthcare" },
       { value: "real-estate", label: "Real Estate" },
@@ -56,7 +56,7 @@ export const questions: Question[] = [
     id: "companySize",
     section: "Business basics",
     title: "Company size?",
-    type: "multi-select",
+    type: "single-select",
     options: [
       { value: "solo", label: "Solo / Founder" },
       { value: "2-10", label: "2–10 employees" },
@@ -64,7 +64,7 @@ export const questions: Question[] = [
       { value: "50+", label: "50+ employees" },
     ],
     required: true,
-    allowOtherText: true,
+    allowOtherText: false,
   },
   {
     id: "acquisitionChannel",
@@ -119,7 +119,7 @@ export const questions: Question[] = [
     id: "manualHours",
     section: "Operations",
     title: "How many hours per week are spent on manual administrative work?",
-    type: "multi-select",
+    type: "single-select",
     options: [
       { value: "<5", label: "<5 hours" },
       { value: "5-20", label: "5–20 hours" },
@@ -159,7 +159,7 @@ export const questions: Question[] = [
     id: "integrations",
     section: "Technology stack",
     title: "Are these systems integrated with each other?",
-    type: "multi-select",
+    type: "single-select",
     options: [
       { value: "fully", label: "Fully integrated" },
       { value: "partially", label: "Partially integrated" },
@@ -187,7 +187,7 @@ export const questions: Question[] = [
   {
     id: "scalabilityBreak",
     section: "Scalability",
-    title: "If your business suddenly got 3× more customers, what would break first?",
+    title: "If your business suddenly got 3× more customers, what would break?",
     helper: "Think about support, fulfillment, reporting, inventory, or sales follow-ups.",
     type: "multi-select",
     options: [
@@ -205,7 +205,7 @@ export const questions: Question[] = [
     id: "priority",
     section: "Strategic priority",
     title: "What is your biggest priority right now?",
-    type: "multi-select",
+    type: "single-select",
     options: [
       { value: "increase-revenue", label: "Increase revenue" },
       { value: "reduce-cost", label: "Reduce operational cost" },

@@ -1,7 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "http";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { FieldValue } from "firebase-admin/firestore";
 
 /** Read raw body from request stream (fallback when req.body is not set, e.g. on some Vercel runtimes). */
 function readBody(req: IncomingMessage): Promise<string> {
@@ -181,7 +180,7 @@ export default async function handler(
       (req as any).headers?.["user-agent"] ??
       null;
 
-    const docData = sanitizeForFirestore({
+    const sanitized = sanitizeForFirestore({
       lead: { name, email },
       answers,
       meta: {
@@ -189,8 +188,8 @@ export default async function handler(
         ip: ip ?? null,
         userAgent: userAgent ?? null,
       },
-      createdAt: FieldValue.serverTimestamp(),
     });
+    const docData = { ...sanitized };
 
     try {
       await firestore.collection("QUESTIONNAIRE_LEADS").add(docData);
