@@ -63,13 +63,14 @@ export default async function handler(
   setCors(res);
 
   try {
-    if (req.method === "OPTIONS") {
+    const method = (req.method || "").toUpperCase();
+    if (method === "OPTIONS") {
       res.statusCode = 200;
       res.end();
       return;
     }
 
-    if (req.method !== "POST") {
+    if (method !== "POST") {
       res.statusCode = 405;
       res.setHeader("Content-Type", "application/json");
       res.end(
