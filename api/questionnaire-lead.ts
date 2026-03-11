@@ -13,7 +13,7 @@ function readBody(req: IncomingMessage): Promise<string> {
 
 // Initialize Firebase Admin with service account from environment
 function getFirestore(): admin.firestore.Firestore {
-  if (!admin.apps.length) {
+  if (!admin.apps?.length) {
     const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
 
     if (!serviceAccountJson || typeof serviceAccountJson !== "string") {
@@ -25,6 +25,12 @@ function getFirestore(): admin.firestore.Firestore {
       parsed = JSON.parse(serviceAccountJson) as Record<string, unknown>;
     } catch {
       throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON.");
+    }
+
+    const required = ["type", "project_id", "private_key_id", "private_key", "client_email"];
+    const missing = required.filter((k) => !parsed[k] || typeof parsed[k] !== "string");
+    if (missing.length) {
+      throw new Error(`FIREBASE_SERVICE_ACCOUNT_JSON missing or invalid: ${missing.join(", ")}. Paste the full JSON from Firebase.`);
     }
 
     // Ensure private_key has real newlines (env vars often store \n as literal backslash-n)
