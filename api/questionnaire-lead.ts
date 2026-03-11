@@ -42,6 +42,16 @@ interface QuestionnairePayload {
   meta?: AnyObject;
 }
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+function setCors(res: ServerResponse & { setHeader: (name: string, value: string) => void }) {
+  Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
+}
+
 export default async function handler(
   req: IncomingMessage & { method?: string; body?: unknown },
   res: ServerResponse & {
@@ -50,11 +60,24 @@ export default async function handler(
     end: (data?: string) => void;
   }
 ) {
+  setCors(res);
+
   try {
+    if (req.method === "OPTIONS") {
+      res.statusCode = 200;
+      res.end();
+      return;
+    }
+
     if (req.method !== "POST") {
       res.statusCode = 405;
       res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify({ error: "Method not allowed" }));
+      res.end(
+        JSON.stringify({
+          error: "Method not allowed",
+          message: "This endpoint accepts POST only. Submit the questionnaire form to use it.",
+        })
+      );
       return;
     }
 
