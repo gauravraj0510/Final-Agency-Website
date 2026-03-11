@@ -1,30 +1,42 @@
 import type { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 
+/** Read raw body from request stream (fallback when req.body is not set, e.g. on some Vercel runtimes). */
+function readBody(req: IncomingMessage): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    req.on("data", (chunk) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
+    req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+    req.on("error", reject);
+  });
+}
+
 // Initialize Firebase Admin with service account from environment
-function getFirestore() {
+function getFirestore(): admin.firestore.Firestore {
   if (!admin.apps.length) {
     const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
 
-    if (!serviceAccountJson) {
-      throw new Error(
-        "FIREBASE_SERVICE_ACCOUNT_JSON env var is not set. It must contain the full service account JSON."
-      );
+    if (!serviceAccountJson || typeof serviceAccountJson !== "string") {
+      throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON env var is not set.");
     }
 
-    let serviceAccount: admin.ServiceAccount;
+    let parsed: Record<string, unknown>;
     try {
-      serviceAccount = JSON.parse(serviceAccountJson);
-    } catch (err) {
-      throw new Error(
-        "FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON. Please paste the exact service account JSON."
-      );
+      parsed = JSON.parse(serviceAccountJson) as Record<string, unknown>;
+    } catch {
+      throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON.");
     }
+
+    // Ensure private_key has real newlines (env vars often store \n as literal backslash-n)
+    if (typeof parsed.private_key === "string" && parsed.private_key.includes("\\n")) {
+      parsed = { ...parsed, private_key: parsed.private_key.replace(/\\n/g, "\n") };
+    }
+
+    const serviceAccount = parsed as admin.ServiceAccount;
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      // Prefer explicit project ID from env; otherwise let the credential determine it.
-      projectId: process.env.FIREBASE_PROJECT_ID,
+      projectId: process.env.FIREBASE_PROJECT_ID || (parsed.project_id as string) || undefined,
     });
   }
 
@@ -96,13 +108,19 @@ export default async function handler(
       return;
     }
 
-    // Vercel may attach parsed body to req.body; fallback to parsing raw body.
+    // Vercel may attach parsed body to req.body; fallback: read from request stream.
     let payload: QuestionnairePayload | undefined = (req as any).body;
-    if (!payload && typeof (req as any).body === "string") {
-      try {
-        payload = JSON.parse((req as any).body) as QuestionnairePayload;
-      } catch {
-        payload = undefined;
+    if (!payload || typeof payload !== "object") {
+      const raw =
+        typeof (req as any).body === "string"
+          ? (req as any).body
+          : await readBody(req as IncomingMessage);
+      if (raw && raw.trim()) {
+        try {
+          payload = JSON.parse(raw) as QuestionnairePayload;
+        } catch {
+          payload = undefined;
+        }
       }
     }
     if (!payload || typeof payload !== "object") {
@@ -140,7 +158,23 @@ export default async function handler(
       return;
     }
 
-    const firestore = getFirestore();
+    let firestore: admin.firestore.Firestore;
+    try {
+      firestore = getFirestore();
+    } catch (initErr: unknown) {
+      const msg = initErr instanceof Error ? initErr.message : String(initErr);
+      console.error("Firebase init error:", msg);
+      res.statusCode = 503;
+      res.setHeader("Content-Type", "application/json");
+      res.end(
+        JSON.stringify({
+          error: "Service temporarily unavailable.",
+          code: "FIREBASE_INIT",
+          message: msg,
+        })
+      );
+      return;
+    }
 
     const forwardedFor = (req as any).headers?.["x-forwarded-for"];
     const ip = typeof forwardedFor === "string" ? forwardedFor.split(",")[0].trim() : null;
@@ -160,7 +194,22 @@ export default async function handler(
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    await firestore.collection("QUESTIONNAIRE_LEADS").add(docData);
+    try {
+      await firestore.collection("QUESTIONNAIRE_LEADS").add(docData);
+    } catch (writeErr: unknown) {
+      const msg = writeErr instanceof Error ? writeErr.message : String(writeErr);
+      console.error("Firestore write error:", msg, writeErr);
+      res.statusCode = 503;
+      res.setHeader("Content-Type", "application/json");
+      res.end(
+        JSON.stringify({
+          error: "Could not save your response.",
+          code: "FIRESTORE_WRITE",
+          message: msg,
+        })
+      );
+      return;
+    }
 
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
@@ -173,7 +222,8 @@ export default async function handler(
     res.end(
       JSON.stringify({
         error: "Internal server error while saving questionnaire lead.",
-        ...(process.env.NODE_ENV !== "production" && { detail: message }),
+        code: "SERVER_ERROR",
+        message,
       })
     );
   }
