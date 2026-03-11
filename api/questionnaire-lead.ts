@@ -11,38 +11,31 @@ function readBody(req: IncomingMessage): Promise<string> {
   });
 }
 
-// Initialize Firebase Admin with service account from environment
+// Initialize Firebase Admin from individual env vars (no JSON blob)
 function getFirestore(): admin.firestore.Firestore {
   if (!admin.apps?.length) {
-    const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+    const projectId = process.env.FIREBASE_PROJECT_ID?.trim();
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim();
+    let privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim();
 
-    if (!serviceAccountJson || typeof serviceAccountJson !== "string") {
-      throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON env var is not set.");
+    if (!projectId) throw new Error("FIREBASE_PROJECT_ID env var is not set.");
+    if (!clientEmail) throw new Error("FIREBASE_CLIENT_EMAIL env var is not set.");
+    if (!privateKey) throw new Error("FIREBASE_PRIVATE_KEY env var is not set.");
+
+    // Env vars often store newlines as literal \n
+    if (privateKey.includes("\\n")) {
+      privateKey = privateKey.replace(/\\n/g, "\n");
     }
 
-    let parsed: Record<string, unknown>;
-    try {
-      parsed = JSON.parse(serviceAccountJson) as Record<string, unknown>;
-    } catch {
-      throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON.");
-    }
-
-    const required = ["type", "project_id", "private_key_id", "private_key", "client_email"];
-    const missing = required.filter((k) => !parsed[k] || typeof parsed[k] !== "string");
-    if (missing.length) {
-      throw new Error(`FIREBASE_SERVICE_ACCOUNT_JSON missing or invalid: ${missing.join(", ")}. Paste the full JSON from Firebase.`);
-    }
-
-    // Ensure private_key has real newlines (env vars often store \n as literal backslash-n)
-    if (typeof parsed.private_key === "string" && parsed.private_key.includes("\\n")) {
-      parsed = { ...parsed, private_key: parsed.private_key.replace(/\\n/g, "\n") };
-    }
-
-    const serviceAccount = parsed as admin.ServiceAccount;
+    const credential = admin.credential.cert({
+      projectId,
+      clientEmail,
+      privateKey,
+    });
 
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      projectId: process.env.FIREBASE_PROJECT_ID || (parsed.project_id as string) || undefined,
+      credential,
+      projectId,
     });
   }
 
