@@ -2,6 +2,11 @@ import React, { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { questions } from "../questionnaire/questions";
 
+const API_BASE =
+  typeof import.meta.env?.VITE_API_BASE_URL === "string" && import.meta.env.VITE_API_BASE_URL
+    ? import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "")
+    : "https://final-agency-website.vercel.app";
+
 type AnswerValue = string | string[];
 type Answers = Record<string, AnswerValue>;
 
@@ -58,7 +63,12 @@ const QuestionnairePage: React.FC = () => {
         : [];
       const otherKey = `${currentQuestion.id}__other`;
       const otherVal = (answers[otherKey] as string | undefined)?.trim?.() ?? "";
-      return arr.length > 0 || otherVal.length > 0;
+      // Q6 (leadFollowup): allow "Add a bit more detail" text alone if no option applies
+      const detailVal =
+        currentQuestion.id === "leadFollowup"
+          ? (answers["leadFollowup_details"] as string | undefined)?.trim?.() ?? ""
+          : "";
+      return arr.length > 0 || otherVal.length > 0 || detailVal.length > 0;
     }
 
     const str = (raw ?? "") as string;
@@ -130,7 +140,7 @@ const QuestionnairePage: React.FC = () => {
         },
       };
 
-      const res = await fetch("/api/questionnaire-lead", {
+      const res = await fetch(`${API_BASE}/api/questionnaire-lead`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

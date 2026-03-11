@@ -42,6 +42,20 @@ interface QuestionnairePayload {
   meta?: AnyObject;
 }
 
+/** Remove undefined values so Firestore accepts the document (it rejects undefined). */
+function sanitizeForFirestore(obj: AnyObject): AnyObject {
+  const out: AnyObject = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === undefined) continue;
+    if (v !== null && typeof v === "object" && !Array.isArray(v) && !(v instanceof Date)) {
+      out[k] = sanitizeForFirestore(v as AnyObject);
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -82,10 +96,16 @@ export default async function handler(
       return;
     }
 
-    // In Vercel's Node runtime, body is already parsed for TS/JS handlers.
-    const payload = (req as any).body as QuestionnairePayload | undefined;
-
-    if (!payload) {
+    // Vercel may attach parsed body to req.body; fallback to parsing raw body.
+    let payload: QuestionnairePayload | undefined = (req as any).body;
+    if (!payload && typeof (req as any).body === "string") {
+      try {
+        payload = JSON.parse((req as any).body) as QuestionnairePayload;
+      } catch {
+        payload = undefined;
+      }
+    }
+    if (!payload || typeof payload !== "object") {
       res.statusCode = 400;
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify({ error: "Missing request body" }));
@@ -122,34 +142,38 @@ export default async function handler(
 
     const firestore = getFirestore();
 
-    const now = admin.firestore.FieldValue.serverTimestamp();
+    const forwardedFor = (req as any).headers?.["x-forwarded-for"];
+    const ip = typeof forwardedFor === "string" ? forwardedFor.split(",")[0].trim() : null;
+    const userAgent =
+      (payload.meta as AnyObject | undefined)?.userAgent ??
+      (req as any).headers?.["user-agent"] ??
+      null;
 
-    const docData = {
-      lead: {
-        name,
-        email,
-      },
+    const docData = sanitizeForFirestore({
+      lead: { name, email },
       answers,
       meta: {
-        ...(payload.meta ?? {}),
-        ip: (req as any).headers?.["x-forwarded-for"] || (req as any).socket?.remoteAddress || null,
-        userAgent: (payload.meta as AnyObject | undefined)?.userAgent ?? (req as any).headers?.["user-agent"] ?? null,
+        ...(payload.meta && typeof payload.meta === "object" ? payload.meta : {}),
+        ip: ip ?? null,
+        userAgent: userAgent ?? null,
       },
-      createdAt: now,
-    };
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
 
     await firestore.collection("QUESTIONNAIRE_LEADS").add(docData);
 
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ ok: true }));
-  } catch (err: any) {
-    console.error("Error handling questionnaire-lead:", err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("Error handling questionnaire-lead:", message, err);
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
     res.end(
       JSON.stringify({
         error: "Internal server error while saving questionnaire lead.",
+        ...(process.env.NODE_ENV !== "production" && { detail: message }),
       })
     );
   }
