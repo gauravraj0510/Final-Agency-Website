@@ -17,6 +17,33 @@ type Answers = Record<string, AnswerValue>;
 type StepState = "idle" | "submitting" | "success" | "error";
 type PostSubmitState = "offer" | "signing-in" | "sign-in-error";
 
+/* Decorative background — matches homepage "Meet the Visionaries" section */
+const PageBackground: React.FC = () => (
+  <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    {/* Purple gradient orb — top-left */}
+    <div
+      className="absolute w-[600px] h-[600px] rounded-full blur-[150px] opacity-20"
+      style={{ background: 'radial-gradient(circle, #7c3aed 0%, transparent 70%)', top: '10%', left: '-10%' }}
+    />
+    {/* Violet orb — bottom-right */}
+    <div
+      className="absolute w-[500px] h-[500px] rounded-full blur-[120px] opacity-15"
+      style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)', bottom: '20%', right: '-5%' }}
+    />
+    {/* Subtle grid pattern */}
+    <div
+      className="absolute inset-0 opacity-[0.03]"
+      style={{
+        backgroundImage:
+          'linear-gradient(rgba(168, 85, 247, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.5) 1px, transparent 1px)',
+        backgroundSize: '60px 60px',
+      }}
+    />
+    {/* Top glow accent */}
+    <div className="absolute top-[-10%] left-[20%] right-[20%] h-[300px] bg-purple-500/10 blur-[100px] rounded-full" />
+  </div>
+);
+
 const QuestionnairePage: React.FC = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -486,13 +513,14 @@ const QuestionnairePage: React.FC = () => {
 
   if (stepState === "success") {
     return (
-      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 relative">
+        <PageBackground />
         <Navigation />
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
-          className="max-w-xl w-full space-y-6 glass-dark rounded-3xl border border-purple-500/20 px-6 py-8 md:px-10 md:py-10"
+          className="relative z-10 max-w-xl w-full space-y-6 glass-dark rounded-3xl border border-purple-500/20 px-6 py-8 md:px-10 md:py-10"
         >
           <p className="text-xs uppercase tracking-[0.3em] text-purple-300/80">
             AI Operational Assessment
@@ -602,11 +630,12 @@ const QuestionnairePage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4"
+      className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 relative"
       onKeyDown={handleKeyDown}
     >
+      <PageBackground />
       <Navigation />
-      <div className="max-w-2xl w-full space-y-6">
+      <div className="relative z-10 max-w-2xl w-full space-y-6">
         {/* Header / progress */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">

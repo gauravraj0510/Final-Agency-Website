@@ -43,6 +43,29 @@ interface AnalysisResult {
 
 type PageState = "loading" | "ready" | "error" | "auth-required";
 
+/* Decorative background — matches homepage "Meet the Visionaries" section */
+const PageBackground: React.FC = () => (
+  <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div
+      className="absolute w-[600px] h-[600px] rounded-full blur-[150px] opacity-20"
+      style={{ background: 'radial-gradient(circle, #7c3aed 0%, transparent 70%)', top: '10%', left: '-10%' }}
+    />
+    <div
+      className="absolute w-[500px] h-[500px] rounded-full blur-[120px] opacity-15"
+      style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)', bottom: '20%', right: '-5%' }}
+    />
+    <div
+      className="absolute inset-0 opacity-[0.03]"
+      style={{
+        backgroundImage:
+          'linear-gradient(rgba(168, 85, 247, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.5) 1px, transparent 1px)',
+        backgroundSize: '60px 60px',
+      }}
+    />
+    <div className="absolute top-[-10%] left-[20%] right-[20%] h-[300px] bg-purple-500/10 blur-[100px] rounded-full" />
+  </div>
+);
+
 /* ------------------------------------------------------------------ */
 /*  Small visual components                                           */
 /* ------------------------------------------------------------------ */
@@ -183,9 +206,10 @@ const AnalysisLoader: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 relative">
+      <PageBackground />
       <Navigation />
-      <div className="max-w-md w-full space-y-10 text-center">
+      <div className="relative z-10 max-w-md w-full space-y-10 text-center">
         {/* Animated rings */}
         <div className="relative mx-auto" style={{ width: 120, height: 120 }}>
           {[0, 1, 2].map((i) => (
@@ -414,9 +438,10 @@ const AnalysisDashboard: React.FC = () => {
   if (!analysis) return null;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white px-4 py-10 md:py-16">
+    <div className="min-h-screen bg-[#050505] text-white px-4 py-10 md:py-16 relative">
+      <PageBackground />
       <Navigation />
-      <div className="mx-auto max-w-3xl space-y-10 pt-16">
+      <div className="relative z-10 mx-auto max-w-3xl space-y-10 pt-16">
         {/* Reused analysis banner */}
         {isReused && (
           <motion.div
@@ -548,9 +573,10 @@ const AnalysisDashboard: React.FC = () => {
 
 /* Shared layout shell for non-dashboard states */
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4">
+  <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 relative">
+    <PageBackground />
     <Navigation />
-    <div className="max-w-xl w-full glass-dark rounded-3xl border border-white/10 px-6 py-8 md:px-10 md:py-10">
+    <div className="relative z-10 max-w-xl w-full glass-dark rounded-3xl border border-white/10 px-6 py-8 md:px-10 md:py-10">
       {children}
     </div>
   </div>
