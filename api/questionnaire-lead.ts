@@ -2,11 +2,30 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-/** Read raw body from request stream (fallback when req.body is not set, e.g. on some Vercel runtimes). */
-function readBody(req: IncomingMessage): Promise<string> {
+const MAX_BODY_BYTES = 32_768; // 32KB — allows long textarea answers across 16 questions
+
+const ALLOWED_ORIGINS: readonly string[] = [
+  "https://avelix.io",
+  "https://www.avelix.io",
+  "https://final-agency-website.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
+function readBody(req: IncomingMessage, maxBytes: number): Promise<string> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
-    req.on("data", (chunk) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
+    let totalBytes = 0;
+    req.on("data", (chunk) => {
+      const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+      totalBytes += buf.length;
+      if (totalBytes > maxBytes) {
+        req.destroy();
+        reject(new Error("Request body too large"));
+        return;
+      }
+      chunks.push(buf);
+    });
     req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     req.on("error", reject);
   });
@@ -65,14 +84,19 @@ function sanitizeForFirestore(obj: AnyObject): AnyObject {
   return out;
 }
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+function getAllowedOrigin(req: IncomingMessage): string {
+  const origin = (req as any).headers?.origin ?? "";
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    return origin;
+  }
+  return ALLOWED_ORIGINS[0];
+}
 
-function setCors(res: ServerResponse & { setHeader: (name: string, value: string) => void }) {
-  Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
+function setCors(req: IncomingMessage, res: ServerResponse & { setHeader: (name: string, value: string) => void }) {
+  res.setHeader("Access-Control-Allow-Origin", getAllowedOrigin(req));
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Vary", "Origin");
 }
 
 export default async function handler(
@@ -83,13 +107,22 @@ export default async function handler(
     end: (data?: string) => void;
   }
 ) {
-  setCors(res);
+  setCors(req, res);
 
   try {
     const method = (req.method || "").toUpperCase();
     if (method === "OPTIONS") {
-      res.statusCode = 200;
+      res.statusCode = 204;
       res.end();
+      return;
+    }
+
+    /* ---------- Origin check ---------- */
+    const origin = (req as any).headers?.origin ?? "";
+    if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+      res.statusCode = 403;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ error: "Forbidden" }));
       return;
     }
 
@@ -111,7 +144,7 @@ export default async function handler(
       const raw =
         typeof (req as any).body === "string"
           ? (req as any).body
-          : await readBody(req as IncomingMessage);
+          : await readBody(req as IncomingMessage, MAX_BODY_BYTES);
       if (raw && raw.trim()) {
         try {
           payload = JSON.parse(raw) as QuestionnairePayload;
@@ -133,7 +166,8 @@ export default async function handler(
     const name = typeof lead.name === "string" ? lead.name.trim() : "";
     const email = typeof lead.email === "string" ? lead.email.trim() : "";
 
-    if (!name || !email) {
+    const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name || !email || !EMAIL_PATTERN.test(email)) {
       res.statusCode = 400;
       res.setHeader("Content-Type", "application/json");
       res.end(

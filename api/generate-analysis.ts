@@ -5,13 +5,40 @@ import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { GoogleGenerativeAI, SchemaType, type Schema } from "@google/generative-ai";
 
 /* ------------------------------------------------------------------ */
-/*  Helpers                                                           */
+/*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-function readBody(req: IncomingMessage): Promise<string> {
+const MAX_BODY_BYTES = 2048; // only contains { docId: "..." }
+const DOCID_PATTERN = /^[a-zA-Z0-9_-]{10,40}$/;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 3;
+
+const ALLOWED_ORIGINS: readonly string[] = [
+  "https://avelix.io",
+  "https://www.avelix.io",
+  "https://final-agency-website.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function readBody(req: IncomingMessage, maxBytes: number): Promise<string> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
-    req.on("data", (c) => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
+    let totalBytes = 0;
+    req.on("data", (c) => {
+      const buf = Buffer.isBuffer(c) ? c : Buffer.from(c);
+      totalBytes += buf.length;
+      if (totalBytes > maxBytes) {
+        req.destroy();
+        reject(new Error("Request body too large"));
+        return;
+      }
+      chunks.push(buf);
+    });
     req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     req.on("error", reject);
   });
@@ -38,14 +65,20 @@ function getFirebaseAdmin() {
   return { auth: getAuth(), firestore: getFirestore() };
 }
 
-const corsHeaders: Record<string, string> = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
+function getAllowedOrigin(req: IncomingMessage): string {
+  const origin = (req as any).headers?.origin ?? "";
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    return origin;
+  }
+  return ALLOWED_ORIGINS[0];
+}
 
-function setCors(res: ServerResponse) {
-  Object.entries(corsHeaders).forEach(([k, v]) => res.setHeader(k, v));
+function setCors(req: IncomingMessage, res: ServerResponse) {
+  const origin = getAllowedOrigin(req);
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Vary", "Origin");
 }
 
 function sendJson(res: ServerResponse, status: number, body: Record<string, unknown>) {
@@ -55,7 +88,7 @@ function sendJson(res: ServerResponse, status: number, body: Record<string, unkn
 }
 
 /* ------------------------------------------------------------------ */
-/*  Gemini structured output schema                                   */
+/*  Gemini structured output schema                                    */
 /* ------------------------------------------------------------------ */
 
 const analysisResponseSchema: Schema = {
@@ -104,7 +137,39 @@ const analysisResponseSchema: Schema = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Handler                                                           */
+/*  Rate limiting (Firestore-backed, works across serverless instances)*/
+/* ------------------------------------------------------------------ */
+
+async function checkRateLimit(
+  firestore: FirebaseFirestore.Firestore,
+  uid: string
+): Promise<boolean> {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW_MS;
+  const rateLimitRef = firestore.collection("RATE_LIMITS").doc(`analysis_${uid}`);
+
+  const doc = await rateLimitRef.get();
+  const data = doc.data();
+
+  if (!data) {
+    await rateLimitRef.set({ timestamps: [now] });
+    return true;
+  }
+
+  const timestamps: number[] = (data.timestamps ?? []).filter(
+    (t: number) => t > windowStart
+  );
+
+  if (timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return false;
+  }
+
+  await rateLimitRef.set({ timestamps: [...timestamps, now] });
+  return true;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Handler                                                            */
 /* ------------------------------------------------------------------ */
 
 export default async function handler(
@@ -115,21 +180,42 @@ export default async function handler(
     end: (data?: string) => void;
   }
 ) {
-  setCors(res as ServerResponse);
+  setCors(req, res as ServerResponse);
 
   const method = (req.method ?? "").toUpperCase();
-  if (method === "OPTIONS") { res.statusCode = 200; res.end(); return; }
+  if (method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
   if (method !== "POST") { sendJson(res, 405, { error: "POST only" }); return; }
 
-  /* ---------- Parse body ---------- */
+  /* ---------- Origin check (block requests from unknown origins) ---------- */
+  const origin = (req as any).headers?.origin ?? "";
+  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+    sendJson(res, 403, { error: "Forbidden" });
+    return;
+  }
+
+  /* ---------- Parse body with size limit ---------- */
   let body: { docId?: string } | undefined = (req as any).body;
   if (!body || typeof body !== "object") {
-    const raw = typeof (req as any).body === "string" ? (req as any).body : await readBody(req);
+    let raw: string;
+    try {
+      raw = typeof (req as any).body === "string"
+        ? (req as any).body
+        : await readBody(req, MAX_BODY_BYTES);
+    } catch {
+      sendJson(res, 413, { error: "Request body too large" });
+      return;
+    }
     try { body = JSON.parse(raw); } catch { body = undefined; }
   }
+
+  /* ---------- Validate docId format ---------- */
   const docId = body?.docId;
   if (!docId || typeof docId !== "string") {
     sendJson(res, 400, { error: "docId is required" });
+    return;
+  }
+  if (!DOCID_PATTERN.test(docId)) {
+    sendJson(res, 400, { error: "Invalid docId format" });
     return;
   }
 
@@ -156,6 +242,13 @@ export default async function handler(
     uid = decoded.uid;
   } catch {
     sendJson(res, 401, { error: "Invalid or expired token" });
+    return;
+  }
+
+  /* ---------- Rate limiting ---------- */
+  const allowed = await checkRateLimit(admin.firestore, uid);
+  if (!allowed) {
+    sendJson(res, 429, { error: "Too many requests. Please try again later." });
     return;
   }
 
@@ -186,14 +279,29 @@ export default async function handler(
     return;
   }
 
-  const existingUsage = await admin.firestore
-    .collection("QUESTIONNAIRE_LEADS")
-    .where("analysisUid", "==", uid)
-    .where("freeAnalysisUsed", "==", true)
-    .limit(1)
-    .get();
+  /* ---------- One-time guard using transaction to prevent races ---------- */
+  const canProceed = await admin.firestore.runTransaction(async (tx) => {
+    const freshSnap = await tx.get(docRef);
+    const freshData = freshSnap.data();
+    if (freshData?.freeAnalysisUsed === true) {
+      return false;
+    }
 
-  if (!existingUsage.empty) {
+    const usageQuery = admin.firestore
+      .collection("QUESTIONNAIRE_LEADS")
+      .where("analysisUid", "==", uid)
+      .where("freeAnalysisUsed", "==", true)
+      .limit(1);
+    const usageSnap = await tx.get(usageQuery);
+    if (!usageSnap.empty) {
+      return false;
+    }
+
+    tx.update(docRef, { analysisInProgress: true });
+    return true;
+  });
+
+  if (!canProceed) {
     sendJson(res, 409, {
       error: "You have already used your free analysis. Book a call for a detailed report.",
       code: "ALREADY_USED",
@@ -244,11 +352,9 @@ RULES:
     analysis = JSON.parse(text);
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : String(err);
-    console.error("Gemini error:", errMsg, err);
-    sendJson(res, 502, {
-      error: "AI analysis failed. Please try again.",
-      detail: process.env.NODE_ENV !== "production" ? errMsg : undefined,
-    });
+    console.error("Gemini error:", errMsg);
+    await docRef.update({ analysisInProgress: FieldValue.delete() });
+    sendJson(res, 502, { error: "AI analysis failed. Please try again." });
     return;
   }
 
@@ -257,6 +363,7 @@ RULES:
     freeAnalysisUsed: true,
     freeAnalysisResult: analysis,
     freeAnalysisAt: FieldValue.serverTimestamp(),
+    analysisInProgress: FieldValue.delete(),
   });
 
   sendJson(res, 200, { ok: true, analysis });
