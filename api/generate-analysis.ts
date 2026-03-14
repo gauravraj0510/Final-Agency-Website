@@ -178,8 +178,10 @@ export default async function handler(
     return;
   }
 
-  /* ---------- One-time guard: check if this UID already used free analysis on another doc ---------- */
-  if (docData.analysisUid && docData.analysisUid !== uid) {
+  /* ---------- Link UID and upgrade to Hot on first sign-in ---------- */
+  if (!docData.analysisUid) {
+    await docRef.update({ analysisUid: uid, leadQuality: "Hot" });
+  } else if (docData.analysisUid !== uid) {
     sendJson(res, 403, { error: "This questionnaire is linked to another account" });
     return;
   }
@@ -240,19 +242,21 @@ RULES:
     const result = await model.generateContent(prompt);
     const text = result.response.text();
     analysis = JSON.parse(text);
-  } catch (err) {
-    console.error("Gemini error:", err);
-    sendJson(res, 502, { error: "AI analysis failed. Please try again." });
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    console.error("Gemini error:", errMsg, err);
+    sendJson(res, 502, {
+      error: "AI analysis failed. Please try again.",
+      detail: process.env.NODE_ENV !== "production" ? errMsg : undefined,
+    });
     return;
   }
 
-  /* ---------- Mark as used, link UID, upgrade lead quality ---------- */
+  /* ---------- Save analysis result and mark as used ---------- */
   await docRef.update({
-    analysisUid: uid,
     freeAnalysisUsed: true,
     freeAnalysisResult: analysis,
     freeAnalysisAt: FieldValue.serverTimestamp(),
-    leadQuality: "Hot",
   });
 
   sendJson(res, 200, { ok: true, analysis });
