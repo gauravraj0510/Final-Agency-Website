@@ -246,12 +246,13 @@ RULES:
     return;
   }
 
-  /* ---------- Mark as used & link UID ---------- */
+  /* ---------- Mark as used, link UID, upgrade lead quality ---------- */
   await docRef.update({
     analysisUid: uid,
     freeAnalysisUsed: true,
     freeAnalysisResult: analysis,
     freeAnalysisAt: FieldValue.serverTimestamp(),
+    leadQuality: "Hot",
   });
 
   sendJson(res, 200, { ok: true, analysis });

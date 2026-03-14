@@ -189,7 +189,7 @@ export default async function handler(
         userAgent: userAgent ?? null,
       },
     });
-    const docData = { ...sanitized };
+    const docData = { ...sanitized, leadQuality: "Warm" };
 
     let docId: string;
     try {
