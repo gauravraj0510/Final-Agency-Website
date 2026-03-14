@@ -335,12 +335,13 @@ const AnalysisDashboard: React.FC = () => {
       const data = await res.json();
 
       if (!res.ok) {
+        console.error("API error response:", JSON.stringify(data));
         if (data?.code === "ALREADY_USED" && data?.error) {
           setErrorMsg(data.error);
           setPageState("error");
           return;
         }
-        throw new Error(data?.error ?? `Request failed (${res.status})`);
+        throw new Error(data?.debug ?? data?.error ?? `Request failed (${res.status})`);
       }
 
       setAnalysis(data.analysis as AnalysisResult);

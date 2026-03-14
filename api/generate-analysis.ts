@@ -315,7 +315,7 @@ export default async function handler(
         responseMimeType: "application/json",
         responseSchema: analysisResponseSchema,
         temperature: 0.4,
-        maxOutputTokens: 1024,
+        maxOutputTokens: 4096,
       },
     });
 
@@ -345,7 +345,7 @@ RULES:
     } catch (err: unknown) {
       const errMsg = err instanceof Error ? err.message : String(err);
       console.error("Gemini error:", errMsg);
-      sendJson(res, 502, { error: "AI analysis failed. Please try again." });
+      sendJson(res, 502, { error: "AI analysis failed. Please try again.", debug: errMsg });
       return;
     }
 
@@ -360,6 +360,6 @@ RULES:
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : String(err);
     console.error("Unhandled error in generate-analysis:", errMsg, err);
-    sendJson(res, 500, { error: "Internal server error. Please try again." });
+    sendJson(res, 500, { error: "Internal server error. Please try again.", debug: errMsg });
   }
 }
