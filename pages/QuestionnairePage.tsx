@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { questions } from "../questionnaire/questions";
 import { signInWithGoogle, handleRedirectResult } from "../lib/firebase-client";
+import Navigation from "../components/Navigation";
 
 const API_BASE =
   typeof import.meta.env?.VITE_API_BASE_URL === "string" && import.meta.env.VITE_API_BASE_URL
@@ -419,6 +420,7 @@ const QuestionnairePage: React.FC = () => {
   if (stepState === "success") {
     return (
       <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4">
+        <Navigation />
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -491,6 +493,7 @@ const QuestionnairePage: React.FC = () => {
       className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4"
       onKeyDown={handleKeyDown}
     >
+      <Navigation />
       <div className="max-w-2xl w-full space-y-6">
         {/* Header / progress */}
         <div className="space-y-4">

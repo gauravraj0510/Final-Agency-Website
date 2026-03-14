@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
-import { auth, getIdToken } from '../lib/firebase-client';
+import { auth, getIdToken, signInWithGoogle } from '../lib/firebase-client';
 
 const API_BASE =
   typeof import.meta.env?.VITE_API_BASE_URL === "string" &&
@@ -105,6 +105,21 @@ const Navigation: React.FC = () => {
           >
             Get started
           </a>
+
+          {/* Login icon (desktop) — shown when logged out */}
+          {!user && (
+            <button
+              type="button"
+              onClick={() => void signInWithGoogle()}
+              className="hidden md:flex items-center justify-center w-8 h-8 rounded-full border border-white/20 hover:border-purple-400/50 hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+              aria-label="Sign in"
+              title="Sign in with Google"
+            >
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </button>
+          )}
 
           {/* User avatar dropdown (desktop) — rightmost */}
           {user && (
@@ -217,6 +232,22 @@ const Navigation: React.FC = () => {
               </a>
             ))}
           </nav>
+
+          {/* Mobile sign-in */}
+          {!user && (
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <button
+                type="button"
+                onClick={() => { closeMobileMenu(); void signInWithGoogle(); }}
+                className="w-full flex items-center gap-2.5 py-3 px-4 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                Sign in
+              </button>
+            </div>
+          )}
 
           {/* Mobile user section */}
           {user && (
