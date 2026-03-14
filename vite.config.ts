@@ -10,10 +10,7 @@ export default defineConfig(({ mode }) => {
         host: '0.0.0.0',
       },
       plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
+      // GEMINI_API_KEY is server-side only (Vercel env). Never expose it to the client bundle.
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),

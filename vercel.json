@@ -4,6 +4,10 @@
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/generate-analysis.ts": {
+      "maxDuration": 60
+    }
+  }
 }
-

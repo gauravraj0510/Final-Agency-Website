@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avelix Private Limited - Logo Suite Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Figtree', sans-serif;
+      background: #0A0A0A;
+      color: #fff;
+      min-height: 100vh;
+      padding: 48px 32px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #C084FC, #A855F7, #7C3AED);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #9CA3AF;
+      font-size: 0.95rem;
+      margin-bottom: 48px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+    .section { margin-bottom: 48px; }
+    .section h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #A855F7;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #1A1A1A;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .logo-grid.four-col {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .logo-card {
+      border: 1px solid #1A1A1A;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .logo-card .preview {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+    }
+    .logo-card .preview.dark { background: #050505; }
+    .logo-card .preview.light { background: #FAFAFA; }
+    .logo-card .preview.checker {
+      background-image:
+        linear-gradient(45deg, #ddd 25%, transparent 25%),
+        linear-gradient(-45deg, #ddd 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ddd 75%),
+        linear-gradient(-45deg, transparent 75%, #ddd 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    }
+    .logo-card .preview img {
+      max-width: 100%;
+      max-height: 180px;
+    }
+    .logo-card .preview.full img {
+      max-width: 100%;
+      max-height: 140px;
+    }
+    .logo-card .label {
+      padding: 12px 16px;
+      background: #111;
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-card .label .filename {
+      color: #C084FC;
+      font-family: monospace;
+      font-size: 0.75rem;
+    }
+    .logo-card .label .size {
+      color: #555;
+      font-family: monospace;
+      font-size: 0.7rem;
+    }
+    .palette {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .color-swatch { width: 100px; text-align: center; }
+    .color-swatch .swatch {
+      width: 100px;
+      height: 64px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      margin-bottom: 6px;
+    }
+    .color-swatch .hex {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #C084FC;
+    }
+    .color-swatch .name {
+      font-size: 0.7rem;
+      color: #555;
+      margin-top: 2px;
+    }
+    .type-sample { margin-bottom: 16px; }
+    .type-sample .weight { color: #555; font-size: 0.75rem; margin-bottom: 2px; }
+    .type-sample .text { font-family: 'Figtree', sans-serif; }
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .spec-card {
+      background: #111;
+      border: 1px solid #1A1A1A;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .spec-card .label { color: #555; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .spec-card .value { color: #E9D5FF; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Avelix Private Limited</h1>
+  <p class="subtitle">Brand Identity Suite &mdash; v2 Compact</p>
+
+  <!-- Icon Only -->
+  <div class="section">
+    <h2>Icon Mark</h2>
+    <div class="logo-grid four-col">
+      <div class="logo-card">
+        <div class="preview dark">
+          <img src="icon-only-dark.svg" alt="Icon Dark">
+        </div>
+        <div class="label">
+          <span>Dark Theme</span>
+          <span class="filename">icon-only-dark.svg</span>
+          <span class="size">400&times;400</span>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="preview light">
+          <img src="icon-only-light.svg" alt="Icon Light">
+        </div>
+        <div class="label">
+          <span>Light Theme</span>
+          <span class="filename">icon-only-light.svg</span>
+          <span class="size">400&times;400</span>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="preview checker">
+          <img src="icon-transparent-dark.svg" alt="Icon Transparent Dark">
+        </div>
+        <div class="label">
+          <span>Dark Transparent</span>
+          <span class="filename">icon-transparent-dark.svg</span>
+          <span class="size">400&times;400</span>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="preview checker">
+          <img src="icon-transparent-light.svg" alt="Icon Transparent Light">
+        </div>
+        <div class="label">
+          <span>Light Transparent</span>
+          <span class="filename">icon-transparent-light.svg</span>
+          <span class="size">400&times;400</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Logo -->
+  <div class="section">
+    <h2>Full Logo (Icon + Branding)</h2>
+    <div class="logo-grid">
+      <div class="logo-card">
+        <div class="preview full dark">
+          <img src="logo-full-dark.svg" alt="Full Logo Dark">
+        </div>
+        <div class="label">
+          <span>Dark Theme</span>
+          <span class="filename">logo-full-dark.svg</span>
+          <span class="size">760&times;280</span>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="preview full light">
+          <img src="logo-full-light.svg" alt="Full Logo Light">
+        </div>
+        <div class="label">
+          <span>Light Theme</span>
+          <span class="filename">logo-full-light.svg</span>
+          <span class="size">760&times;280</span>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="preview full checker">
+          <img src="logo-full-dark-transparent.svg" alt="Full Logo Dark Transparent">
+        </div>
+        <div class="label">
+          <span>Dark Transparent</span>
+          <span class="filename">logo-full-dark-transparent.svg</span>
+          <span class="size">760&times;280</span>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="preview full checker">
+          <img src="logo-full-light-transparent.svg" alt="Full Logo Light Transparent">
+        </div>
+        <div class="label">
+          <span>Light Transparent</span>
+          <span class="filename">logo-full-light-transparent.svg</span>
+          <span class="size">760&times;280</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand Colors -->
+  <div class="section">
+    <h2>Brand Colors</h2>
+    <div class="palette">
+      <div class="color-swatch">
+        <div class="swatch" style="background: #A855F7;"></div>
+        <div class="hex">#A855F7</div>
+        <div class="name">Primary</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: #C084FC;"></div>
+        <div class="hex">#C084FC</div>
+        <div class="name">Light</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: #7C3AED;"></div>
+        <div class="hex">#7C3AED</div>
+        <div class="name">Deep</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: #6D28D9;"></div>
+        <div class="hex">#6D28D9</div>
+        <div class="name">Dark</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: #9333EA;"></div>
+        <div class="hex">#9333EA</div>
+        <div class="name">Vivid</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: #050505;"></div>
+        <div class="hex">#050505</div>
+        <div class="name">BG Dark</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch" style="background: #FAFAFA;"></div>
+        <div class="hex">#FAFAFA</div>
+        <div class="name">BG Light</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typography -->
+  <div class="section">
+    <h2>Typography</h2>
+    <div class="type-sample">
+      <div class="weight">Bold 700</div>
+      <div class="text" style="font-size: 2.5rem; font-weight: 700;">AVELIX</div>
+    </div>
+    <div class="type-sample">
+      <div class="weight">SemiBold 600</div>
+      <div class="text" style="font-size: 1.6rem; font-weight: 600;">Avelix Private Limited</div>
+    </div>
+    <div class="type-sample">
+      <div class="weight">Regular 400 &mdash; Spaced</div>
+      <div class="text" style="font-size: 1rem; font-weight: 400; letter-spacing: 8px; text-transform: uppercase; color: #A855F7;">Private Limited</div>
+    </div>
+  </div>
+
+  <!-- Specs -->
+  <div class="section">
+    <h2>Specifications</h2>
+    <div class="specs">
+      <div class="spec-card">
+        <div class="label">Font</div>
+        <div class="value">Figtree, sans-serif</div>
+      </div>
+      <div class="spec-card">
+        <div class="label">Icon Radius</div>
+        <div class="value">64px (16% of width)</div>
+      </div>
+      <div class="spec-card">
+        <div class="label">Format</div>
+        <div class="value">SVG (scalable)</div>
+      </div>
+      <div class="spec-card">
+        <div class="label">Effects</div>
+        <div class="value">Gradient, glow, shadow</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -146,3 +146,33 @@ img {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(168, 85, 247, 0.1);
 }
+
+/* Button Utilities */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #a855f7 0%, #d946ef 50%, #a855f7 100%);
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+  transition: box-shadow 0.2s, opacity 0.2s;
+}
+.btn-primary:hover { box-shadow: 0 8px 32px rgba(168, 85, 247, 0.45); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-outline:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }

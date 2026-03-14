@@ -191,8 +191,10 @@ export default async function handler(
     });
     const docData = { ...sanitized };
 
+    let docId: string;
     try {
-      await firestore.collection("QUESTIONNAIRE_LEADS").add(docData);
+      const docRef = await firestore.collection("QUESTIONNAIRE_LEADS").add(docData);
+      docId = docRef.id;
     } catch (writeErr: unknown) {
       const msg = writeErr instanceof Error ? writeErr.message : String(writeErr);
       console.error("Firestore write error:", msg, writeErr);
@@ -210,7 +212,7 @@ export default async function handler(
 
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ ok: true }));
+    res.end(JSON.stringify({ ok: true, docId }));
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("Error handling questionnaire-lead:", message, err);
