@@ -95,9 +95,18 @@ const Navigation: React.FC = () => {
           ))}
         </div>
 
-        {/* CTA + User avatar + Mobile menu button */}
+        {/* CTA + Mobile menu + User avatar */}
         <div className="flex items-center gap-2 mr-2 md:ml-2">
-          {/* User avatar dropdown (desktop) */}
+          <a
+            href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 items-center gap-1 group bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25"
+          >
+            Get started
+          </a>
+
+          {/* User avatar dropdown (desktop) — rightmost */}
           {user && (
             <div className="relative hidden md:block" ref={dropdownRef}>
               <button
@@ -136,7 +145,7 @@ const Navigation: React.FC = () => {
                       <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                       </svg>
-                      My Report
+                      Snapshot Report
                     </a>
                   )}
 
@@ -155,14 +164,6 @@ const Navigation: React.FC = () => {
             </div>
           )}
 
-          <a
-            href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 items-center gap-1 group bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25"
-          >
-            Get started
-          </a>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
@@ -245,7 +246,7 @@ const Navigation: React.FC = () => {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                   </svg>
-                  My Report
+                  Snapshot Report
                 </a>
               )}
 
