@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, { useState, useEffect, useRef } from 'react';
+import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { auth, getIdToken } from '../lib/firebase-client';
 
 const API_BASE =
@@ -12,17 +12,32 @@ const NAV_ITEMS = ['Offerings', 'Credibility', 'Case Studies'];
 
 const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const [analysisDocId, setAnalysisDocId] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      if (!firebaseUser) {
         setAnalysisDocId(null);
         return;
       }
       void lookupAnalysis();
     });
     return unsubscribe;
+  }, []);
+
+  /* Close dropdown on outside click */
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const lookupAnalysis = async () => {
@@ -44,7 +59,17 @@ const Navigation: React.FC = () => {
     }
   };
 
+  const handleLogout = async () => {
+    setDropdownOpen(false);
+    await signOut(auth);
+    setUser(null);
+    setAnalysisDocId(null);
+  };
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  const userInitial = user?.displayName?.[0] ?? user?.email?.[0] ?? "U";
+  const userPhoto = user?.photoURL;
 
   return (
     <>
@@ -70,19 +95,66 @@ const Navigation: React.FC = () => {
           ))}
         </div>
 
-        {/* CTA + My Report + Mobile menu button */}
+        {/* CTA + User avatar + Mobile menu button */}
         <div className="flex items-center gap-2 mr-2 md:ml-2">
-          {analysisDocId && (
-            <a
-              href={`/analysis/${analysisDocId}`}
-              className="hidden md:flex px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 items-center gap-1.5 border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 hover:text-white"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-              </svg>
-              My Report
-            </a>
+          {/* User avatar dropdown (desktop) */}
+          {user && (
+            <div className="relative hidden md:block" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setDropdownOpen((prev) => !prev)}
+                className="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden border border-white/20 hover:border-purple-400/50 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+                aria-label="User menu"
+              >
+                {userPhoto ? (
+                  <img src={userPhoto} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                ) : (
+                  <span className="text-xs font-semibold text-white bg-purple-600 w-full h-full flex items-center justify-center uppercase">
+                    {userInitial}
+                  </span>
+                )}
+              </button>
+
+              {/* Dropdown */}
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[#111] border border-white/10 shadow-xl shadow-black/40 overflow-hidden z-[80]">
+                  <div className="px-4 py-3 border-b border-white/5">
+                    <p className="text-sm font-medium text-white truncate">
+                      {user.displayName ?? "User"}
+                    </p>
+                    <p className="text-xs text-white/40 truncate">
+                      {user.email}
+                    </p>
+                  </div>
+
+                  {analysisDocId && (
+                    <a
+                      href={`/analysis/${analysisDocId}`}
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                      </svg>
+                      My Report
+                    </a>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:text-red-400 hover:bg-white/5 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3l3-3m0 0l-3-3m3 3H9" />
+                    </svg>
+                    Log out
+                  </button>
+                </div>
+              )}
+            </div>
           )}
+
           <a
             href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
             target="_blank"
@@ -131,6 +203,7 @@ const Navigation: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
+
           <nav className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <a
@@ -142,19 +215,53 @@ const Navigation: React.FC = () => {
                 {item}
               </a>
             ))}
-            {analysisDocId && (
-              <a
-                href={`/analysis/${analysisDocId}`}
-                onClick={closeMobileMenu}
-                className="py-3 px-4 rounded-lg text-base font-medium text-purple-300 hover:text-white hover:bg-purple-500/10 transition-colors flex items-center gap-2"
+          </nav>
+
+          {/* Mobile user section */}
+          {user && (
+            <div className="mt-6 pt-6 border-t border-white/10 space-y-1">
+              <div className="flex items-center gap-3 px-4 py-2">
+                <div className="w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0">
+                  {userPhoto ? (
+                    <img src={userPhoto} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  ) : (
+                    <span className="text-xs font-semibold text-white bg-purple-600 w-full h-full flex items-center justify-center uppercase">
+                      {userInitial}
+                    </span>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-white truncate">{user.displayName ?? "User"}</p>
+                  <p className="text-xs text-white/40 truncate">{user.email}</p>
+                </div>
+              </div>
+
+              {analysisDocId && (
+                <a
+                  href={`/analysis/${analysisDocId}`}
+                  onClick={closeMobileMenu}
+                  className="flex items-center gap-2.5 py-3 px-4 rounded-lg text-base font-medium text-purple-300 hover:text-white hover:bg-purple-500/10 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                  </svg>
+                  My Report
+                </a>
+              )}
+
+              <button
+                type="button"
+                onClick={() => { closeMobileMenu(); void handleLogout(); }}
+                className="w-full flex items-center gap-2.5 py-3 px-4 rounded-lg text-base font-medium text-gray-300 hover:text-red-400 hover:bg-white/5 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3l3-3m0 0l-3-3m3 3H9" />
                 </svg>
-                My Report
-              </a>
-            )}
-          </nav>
+                Log out
+              </button>
+            </div>
+          )}
+
           <div className="mt-auto pt-6">
             <a
               href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
