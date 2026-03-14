@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { auth, getIdToken } from "../lib/firebase-client";
 import { onAuthStateChanged } from "firebase/auth";
+import Navigation from "../components/Navigation";
 
 const API_BASE =
   typeof import.meta.env?.VITE_API_BASE_URL === "string" &&
@@ -183,6 +184,7 @@ const AnalysisLoader: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4">
+      <Navigation />
       <div className="max-w-md w-full space-y-10 text-center">
         {/* Animated rings */}
         <div className="relative mx-auto" style={{ width: 120, height: 120 }}>
@@ -416,7 +418,8 @@ const AnalysisDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white px-4 py-10 md:py-16">
-      <div className="mx-auto max-w-3xl space-y-10">
+      <Navigation />
+      <div className="mx-auto max-w-3xl space-y-10 pt-16">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -525,6 +528,7 @@ const AnalysisDashboard: React.FC = () => {
 /* Shared layout shell for non-dashboard states */
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4">
+    <Navigation />
     <div className="max-w-xl w-full glass-dark rounded-3xl border border-white/10 px-6 py-8 md:px-10 md:py-10">
       {children}
     </div>
