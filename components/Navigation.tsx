@@ -1,9 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, getIdToken } from '../lib/firebase-client';
+
+const API_BASE =
+  typeof import.meta.env?.VITE_API_BASE_URL === "string" &&
+  import.meta.env.VITE_API_BASE_URL
+    ? import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "")
+    : "https://final-agency-website.vercel.app";
 
 const NAV_ITEMS = ['Offerings', 'Credibility', 'Case Studies'];
 
 const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [analysisDocId, setAnalysisDocId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        setAnalysisDocId(null);
+        return;
+      }
+      void lookupAnalysis();
+    });
+    return unsubscribe;
+  }, []);
+
+  const lookupAnalysis = async () => {
+    try {
+      const token = await getIdToken();
+      const res = await fetch(`${API_BASE}/api/lookup-analysis`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        setAnalysisDocId(null);
+        return;
+      }
+      const data = await res.json();
+      if (data.ok && data.docId) {
+        setAnalysisDocId(data.docId);
+      }
+    } catch {
+      setAnalysisDocId(null);
+    }
+  };
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -11,9 +50,9 @@ const Navigation: React.FC = () => {
     <>
       <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 shadow-lg shadow-black/20 pointer-events-auto w-[calc(100%-3rem)] max-w-4xl md:w-auto justify-between md:justify-start">
         {/* Logo */}
-        <div className="pl-4 pr-2 text-lg font-medium tracking-tight text-white flex items-center gap-1">
+        <a href="/" className="pl-4 pr-2 text-lg font-medium tracking-tight text-white flex items-center gap-1 no-underline">
           <span className="font-serif italic text-xl">⌘</span> Avelix
-        </div>
+        </a>
 
         {/* Separator */}
         <div className="w-px h-4 bg-white/10 mx-2 hidden md:block" />
@@ -31,13 +70,24 @@ const Navigation: React.FC = () => {
           ))}
         </div>
 
-        {/* CTA + Mobile menu button */}
+        {/* CTA + My Report + Mobile menu button */}
         <div className="flex items-center gap-2 mr-2 md:ml-2">
+          {analysisDocId && (
+            <a
+              href={`/analysis/${analysisDocId}`}
+              className="hidden md:flex px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 items-center gap-1.5 border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 hover:text-white"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+              </svg>
+              My Report
+            </a>
+          )}
           <a
             href="https://wa.me/919136239673?text=Hey%20I%20want%20to%20automate%20my%20workflow"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:flex px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 group bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25"
+            className="hidden md:flex px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 items-center gap-1 group bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:from-purple-500 hover:to-violet-500 hover:shadow-lg hover:shadow-purple-500/25"
           >
             Get started
           </a>
@@ -92,6 +142,18 @@ const Navigation: React.FC = () => {
                 {item}
               </a>
             ))}
+            {analysisDocId && (
+              <a
+                href={`/analysis/${analysisDocId}`}
+                onClick={closeMobileMenu}
+                className="py-3 px-4 rounded-lg text-base font-medium text-purple-300 hover:text-white hover:bg-purple-500/10 transition-colors flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+                My Report
+              </a>
+            )}
           </nav>
           <div className="mt-auto pt-6">
             <a
