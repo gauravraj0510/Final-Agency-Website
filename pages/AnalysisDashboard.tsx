@@ -300,6 +300,7 @@ const AnalysisDashboard: React.FC = () => {
   const [pageState, setPageState] = useState<PageState>("loading");
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isReused, setIsReused] = useState(false);
 
   useEffect(() => {
     if (!docId) {
@@ -338,15 +339,11 @@ const AnalysisDashboard: React.FC = () => {
 
       if (!res.ok) {
         console.error("API error response:", JSON.stringify(data));
-        if (data?.code === "ALREADY_USED" && data?.error) {
-          setErrorMsg(data.error);
-          setPageState("error");
-          return;
-        }
         throw new Error(data?.debug ?? data?.error ?? `Request failed (${res.status})`);
       }
 
       setAnalysis(data.analysis as AnalysisResult);
+      setIsReused(data.reused === true);
       setPageState("ready");
     } catch (err) {
       console.error("Analysis fetch error:", err);
@@ -420,6 +417,30 @@ const AnalysisDashboard: React.FC = () => {
     <div className="min-h-screen bg-[#050505] text-white px-4 py-10 md:py-16">
       <Navigation />
       <div className="mx-auto max-w-3xl space-y-10 pt-16">
+        {/* Reused analysis banner */}
+        {isReused && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 text-center space-y-2"
+          >
+            <p className="text-sm text-amber-200/90 font-medium">
+              You've already used your free analysis. Showing your previous snapshot report.
+            </p>
+            <p className="text-xs text-white/50">
+              Use a different email for a new free analysis, or{" "}
+              <button
+                type="button"
+                onClick={() => window.open(CALENDLY_URL, "_blank", "noopener")}
+                className="text-purple-300 underline underline-offset-2 hover:text-white transition-colors"
+              >
+                book a call
+              </button>{" "}
+              for a detailed report.
+            </p>
+          </motion.div>
+        )}
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}

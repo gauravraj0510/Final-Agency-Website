@@ -285,7 +285,7 @@ export default async function handler(
       return;
     }
 
-    /* ---------- One-time guard (simple check, no transaction) ---------- */
+    /* ---------- One-time guard: return old analysis if already used ---------- */
     const existingUsage = await admin.firestore
       .collection("QUESTIONNAIRE_LEADS")
       .where("analysisUid", "==", uid)
@@ -294,8 +294,19 @@ export default async function handler(
       .get();
 
     if (!existingUsage.empty) {
-      sendJson(res, 409, {
-        error: "You have already used your free analysis. Book a call for a detailed report.",
+      const oldDoc = existingUsage.docs[0];
+      const oldData = oldDoc.data();
+
+      /* Link UID to the new doc so we track the repeat submission */
+      if (!docData.analysisUid) {
+        await docRef.update({ analysisUid: uid, leadQuality: "Hot" });
+      }
+
+      sendJson(res, 200, {
+        ok: true,
+        analysis: oldData.freeAnalysisResult,
+        cached: true,
+        reused: true,
         code: "ALREADY_USED",
       });
       return;
