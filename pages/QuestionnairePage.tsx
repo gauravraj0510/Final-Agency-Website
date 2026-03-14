@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { questions } from "../questionnaire/questions";
-import { signInWithGoogle } from "../lib/firebase-client";
+import { signInWithGoogle, handleRedirectResult } from "../lib/firebase-client";
 
 const API_BASE =
   typeof import.meta.env?.VITE_API_BASE_URL === "string" && import.meta.env.VITE_API_BASE_URL
@@ -24,6 +24,19 @@ const QuestionnairePage: React.FC = () => {
   const [docId, setDocId] = useState<string | null>(null);
   const [postSubmitState, setPostSubmitState] = useState<PostSubmitState>("offer");
   const [signInError, setSignInError] = useState<string | null>(null);
+
+  /* Handle redirect sign-in return (when popup was blocked by COOP) */
+  useEffect(() => {
+    void handleRedirectResult().then((user) => {
+      if (user) {
+        const savedDocId = sessionStorage.getItem("avelix_docId");
+        if (savedDocId) {
+          sessionStorage.removeItem("avelix_docId");
+          navigate(`/analysis/${savedDocId}`);
+        }
+      }
+    });
+  }, [navigate]);
 
   const totalQuestions = questions.length;
   const currentQuestion = questions[currentIndex];
@@ -383,10 +396,19 @@ const QuestionnairePage: React.FC = () => {
     setPostSubmitState("signing-in");
     setSignInError(null);
     try {
-      await signInWithGoogle();
-      navigate(`/analysis/${docId}`);
+      // Persist docId so it survives a redirect-based sign-in
+      if (docId) sessionStorage.setItem("avelix_docId", docId);
+
+      const user = await signInWithGoogle();
+      if (user) {
+        // Popup succeeded — navigate immediately
+        sessionStorage.removeItem("avelix_docId");
+        navigate(`/analysis/${docId}`);
+      }
+      // If user is null, redirect was triggered — page will reload
     } catch (err) {
       console.error("Google sign-in failed:", err);
+      sessionStorage.removeItem("avelix_docId");
       setSignInError(
         err instanceof Error ? err.message : "Sign-in failed. Please try again."
       );
