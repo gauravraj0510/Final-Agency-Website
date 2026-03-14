@@ -518,7 +518,7 @@ const QuestionnairePage: React.FC = () => {
                   onClick={() => navigate(`/analysis/${existingAnalysisDocId}`)}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition"
                 >
-                  View my snapshot report
+                  View old report
                 </button>
                 <button
                   type="button"
