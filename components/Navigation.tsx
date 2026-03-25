@@ -75,8 +75,8 @@ const Navigation: React.FC = () => {
     <>
       <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 shadow-lg shadow-black/20 pointer-events-auto w-[calc(100%-3rem)] max-w-4xl md:w-auto justify-between md:justify-start">
         {/* Logo */}
-        <a href="/" className="pl-4 pr-2 text-lg font-medium tracking-tight text-white flex items-center gap-1 no-underline">
-          <span className="font-serif italic text-xl">⌘</span> Avelix
+        <a href="/" className="pl-3 pr-2 flex items-center no-underline">
+          <img src="/logo-full-dark.png" alt="Avelix" className="h-[34px] object-contain" />
         </a>
 
         {/* Separator */}
@@ -208,17 +208,21 @@ const Navigation: React.FC = () => {
         }`}
         aria-label="Mobile menu"
       >
-        <div className="flex flex-col h-full pt-20 px-6 pb-8">
-          <button
-            type="button"
-            onClick={closeMobileMenu}
-            className="absolute top-6 right-6 p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-            aria-label="Close menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        <div className="flex flex-col h-full px-6 pb-8">
+          {/* Header: logo + close button */}
+          <div className="flex items-center justify-between pt-6 pb-6 border-b border-white/10 mb-4">
+            <img src="/logo-full-dark.png" alt="Avelix" className="h-12 object-contain" />
+            <button
+              type="button"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Close menu"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
           <nav className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (

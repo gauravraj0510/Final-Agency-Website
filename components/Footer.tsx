@@ -120,9 +120,8 @@ const Footer = () => {
                 <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                     {/* Brand */}
                     <div className="space-y-4">
-                        <div className="flex items-center gap-2 text-white">
-                            <span className="font-serif italic text-xl">⌘</span>
-                            <span className="text-lg font-semibold tracking-tight">Avelix</span>
+                        <div className="flex items-center text-white">
+                            <img src="/logo-full-dark.png" alt="Avelix" className="h-12 object-contain" />
                         </div>
                         <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
                             AI agency helping teams turn customer data into automations and custom solutions that drive measurable growth.
