@@ -31,16 +31,16 @@ const Founders: React.FC = () => {
     {
       id: 2,
       name: 'Gaurav Raj',
-      title: 'Co-Founder & CTO',
-      tagline: 'Architecting tomorrow\'s infrastructure',
-      bio: 'Ex-Meta tech lead specializing in distributed systems and ML infrastructure. Built systems processing 1B+ events daily. Passionate about elegant, scalable solutions.',
+      title: 'Co-Founder & COO',
+      tagline: 'Scaling operations & building products',
+      bio: 'Co-founder of SolBlocks Digital Solutions, managing 19+ team members and delivering 130+ projects in AI & Web3. Product developer at Walsh Wealth Ventures (US) and former Technical Head at Space Falcon ($6M raised). Hackathon winner, TEDx judge, and B.E. in Computer Engineering with Distinction (9.53 CGPA).',
       image: 'https://media.licdn.com/dms/image/v2/D4D03AQFmJSApcxS2fw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1668356735548?e=1774483200&v=beta&t=v70I2ld9ogUjb_tZRsBdELmDvzuJ1koEFQgSH2IpgGg',
-      achievements: ['Ex-Meta', '1B+ Events/Day', 'Stanford CS'],
+      achievements: ['130+ Projects', '19+ Team', 'TEDx Judge'],
       icon: Code2,
       socials: {
-        linkedin: 'https://linkedin.com',
-        twitter: 'https://twitter.com',
-        github: 'https://github.com',
+        linkedin: 'https://www.linkedin.com/in/gauravraj0510',
+        twitter: 'https://twitter.com/gauravraj0510',
+        github: 'https://github.com/gauravraj0510',
       },
     },
   ];
