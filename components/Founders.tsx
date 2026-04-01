@@ -31,7 +31,7 @@ const Founders: React.FC = () => {
     {
       id: 2,
       name: 'Gaurav Raj',
-      title: 'Co-Founder & COO',
+      title: 'Co-Founder & CTO/COO',
       tagline: 'Scaling operations & building products',
       bio: 'Co-founder of SolBlocks Digital Solutions, managing 19+ team members and delivering 130+ projects in AI & Web3. Product developer at Walsh Wealth Ventures (US) and former Technical Head at Space Falcon ($6M raised). Hackathon winner and TEDx judge.',
       image: '/gaurav-raj.png',
