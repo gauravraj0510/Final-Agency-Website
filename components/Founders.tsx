@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Linkedin, Twitter, Github, Sparkles, Zap, Code2, Brain } from 'lucide-react';
+import { Linkedin, Twitter, Github, Instagram, Sparkles, Zap, Code2, Brain } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -17,15 +17,15 @@ const Founders: React.FC = () => {
       id: 1,
       name: 'Adarsh Tiwari',
       title: 'Co-Founder & CEO',
-      tagline: 'Building the future of automation',
-      bio: 'Former Google engineer with 10+ years building scalable systems. Led teams that shipped products to 100M+ users. Now democratizing AI for businesses of all sizes.',
+      tagline: 'Strategy, growth & product vision',
+      bio: 'Founder & CEO of SolBlocks Digital Solutions, driving growth strategy and client success across 130+ delivered projects. Senior Product Manager at Strive Network and former Product Manager at Space Falcon ($6M raised). Specializes in blockchain, AI, and Web3 product management.',
       image: 'https://media.licdn.com/dms/image/v2/D4D03AQEQ8T07GErthw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715710002535?e=1774483200&v=beta&t=R8URHT6pBoH6SeLgABdkNMkif9XpE0Et3l0goddpci4',
-      achievements: ['Ex-Google', '100M+ Users', '15+ Patents'],
+      achievements: ['130+ Projects', 'Senior PM', 'Web3 Expert'],
       icon: Brain,
       socials: {
-        linkedin: 'https://linkedin.com',
-        twitter: 'https://twitter.com',
-        github: 'https://github.com',
+        linkedin: 'https://www.linkedin.com/in/adarsh-tiwari-1b9416192/',
+        instagram: 'https://www.instagram.com/aiwithadarsh/',
+        github: '',
       },
     },
     {
@@ -33,13 +33,13 @@ const Founders: React.FC = () => {
       name: 'Gaurav Raj',
       title: 'Co-Founder & CTO/COO',
       tagline: 'Scaling operations & building products',
-      bio: 'Co-founder of SolBlocks Digital Solutions, managing 19+ team members and delivering 130+ projects in AI & Web3. Product developer at Walsh Wealth Ventures (US) and former Technical Head at Space Falcon ($6M raised). Hackathon winner and TEDx judge.',
+      bio: 'Co-founder & COO of SolBlocks Digital Solutions, managing 19+ team members and delivering 130+ projects in AI & Web3. Product developer at Walsh Wealth Ventures (US) and former Technical Head at Space Falcon ($6M raised). Hackathon winner and TEDx judge.',
       image: '/gaurav-raj.png',
       achievements: ['130+ Projects', '19+ Team', 'TEDx Judge'],
       icon: Code2,
       socials: {
         linkedin: 'https://www.linkedin.com/in/gauravraj0510',
-        twitter: 'https://twitter.com/gauravraj0510',
+        instagram: '',
         github: 'https://github.com/gauravraj0510',
       },
     },
@@ -331,14 +331,14 @@ const Founders: React.FC = () => {
                           <Linkedin className="w-4 h-4" />
                         </a>
                       )}
-                      {founder.socials.twitter && (
+                      {founder.socials.instagram && (
                         <a
-                          href={founder.socials.twitter}
+                          href={founder.socials.instagram}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-500/20 transition-all duration-300 border border-gray-800 hover:border-purple-500/30"
                         >
-                          <Twitter className="w-4 h-4" />
+                          <Instagram className="w-4 h-4" />
                         </a>
                       )}
                       {founder.socials.github && (
