@@ -201,6 +201,11 @@ const Footer = () => {
                                     Take the assessment
                                 </a>
                             </li>
+                            <li>
+                                <a href="mailto:hello@avelix.io" className="text-sm text-gray-400 hover:text-white transition-colors">
+                                    hello@avelix.io
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

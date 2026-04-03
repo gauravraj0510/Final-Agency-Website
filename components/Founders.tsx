@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Linkedin, Twitter, Github, Instagram, Sparkles, Zap, Code2, Brain } from 'lucide-react';
+import { Linkedin, Mail, Github, Instagram, Sparkles, Zap, Code2, Brain } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -351,6 +351,12 @@ const Founders: React.FC = () => {
                           <Github className="w-4 h-4" />
                         </a>
                       )}
+                      <a
+                        href="mailto:hello@avelix.io"
+                        className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-500/20 transition-all duration-300 border border-gray-800 hover:border-purple-500/30"
+                      >
+                        <Mail className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
 
