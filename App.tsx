@@ -24,7 +24,7 @@ const HomePage: React.FC = () => (
     <Navigation />
     <main>
       <Hero />
-      <LogoMarquee />
+      {/* <LogoMarquee /> */}
       <MetaScroll />
       <PinnedScrollSection />
       <Founders />
