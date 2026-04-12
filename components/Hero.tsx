@@ -16,6 +16,8 @@ const Hero: React.FC = () => {
   // Virtual scroll position for tunnel animation (not actual page scroll)
   const virtualScrollRef = useRef(0);
   const [tunnelComplete, setTunnelComplete] = useState(false);
+  const touchStartYRef = useRef(0);
+  const touchPrevYRef = useRef(0);
 
   // --- CONFIGURATION ---
   const TUNNEL_WIDTH = 24;
@@ -209,6 +211,49 @@ const Hero: React.FC = () => {
     }
   }, [tunnelComplete, SCROLL_NEEDED, SCROLL_SPEED]);
 
+  // Touch handlers for mobile scroll-locking
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    const y = e.touches[0].clientY;
+    touchStartYRef.current = y;
+    touchPrevYRef.current = y;
+  }, []);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    const heroRect = containerRef.current?.getBoundingClientRect();
+    if (!heroRect) return;
+
+    const isInHeroView = heroRect.top <= 0 && heroRect.bottom > 0;
+    const currentY = e.touches[0].clientY;
+    const deltaY = touchPrevYRef.current - currentY; // positive = scroll down
+    touchPrevYRef.current = currentY;
+
+    // Scrolling down, tunnel not complete, in hero view
+    if (deltaY > 0 && !tunnelComplete && isInHeroView) {
+      e.preventDefault();
+      virtualScrollRef.current = Math.min(
+        virtualScrollRef.current + deltaY * SCROLL_SPEED * 3,
+        SCROLL_NEEDED
+      );
+      if (virtualScrollRef.current >= SCROLL_NEEDED) {
+        setTunnelComplete(true);
+      }
+    }
+    // Scrolling up, came back from next section
+    else if (deltaY < 0 && window.scrollY <= 1 && tunnelComplete) {
+      e.preventDefault();
+      setTunnelComplete(false);
+      virtualScrollRef.current = SCROLL_NEEDED - 10;
+    }
+    // Scrolling up, tunnel in progress
+    else if (deltaY < 0 && !tunnelComplete && isInHeroView && virtualScrollRef.current > 0) {
+      e.preventDefault();
+      virtualScrollRef.current = Math.max(
+        virtualScrollRef.current + deltaY * SCROLL_SPEED * 3,
+        0
+      );
+    }
+  }, [tunnelComplete, SCROLL_NEEDED, SCROLL_SPEED]);
+
   // --- INITIAL SETUP ---
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
@@ -279,13 +324,17 @@ const Hero: React.FC = () => {
     };
   }, []);
 
-  // Wheel event listener
+  // Wheel + touch event listeners
   useEffect(() => {
     window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     return () => {
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [handleWheel]);
+  }, [handleWheel, handleTouchStart, handleTouchMove]);
 
   // Text Entrance Animation
   useLayoutEffect(() => {
