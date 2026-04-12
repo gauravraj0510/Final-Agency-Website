@@ -15,57 +15,79 @@ const PinnedScrollSection: React.FC = () => {
         const ctx = gsap.context(() => {
             if (!containerRef.current) return;
 
-            // Only enable on desktop
             const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-            if (!isDesktop) return;
 
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: 'top top',
-                    end: '+=150%', // Pin for 1.5 screen heights
-                    pin: true,
-                    scrub: 1, // Smooth scrubbing
-                    // markers: true, // debug
-                },
-            });
-
-            // Center Card Animation: Scale 0.9 -> 1, Opacity 0.8 -> 1
-            tl.fromTo(
-                centerCardRef.current,
-                { scale: 0.9, opacity: 0.8 },
-                { scale: 1, opacity: 1, ease: 'none' },
-                0
-            );
-
-            // Left Column Animation: Move Up and Fade Out
-            if (leftColumnRef.current) {
-                const leftCards = leftColumnRef.current.children;
-                tl.to(
-                    leftCards,
-                    {
-                        yPercent: -100,
-                        opacity: 0,
-                        stagger: 0.1,
-                        ease: 'none',
+            if (isDesktop) {
+                // Desktop: pinned scroll with side cards animating away
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: 'top top',
+                        end: '+=150%',
+                        pin: true,
+                        scrub: 1,
                     },
+                });
+
+                tl.fromTo(
+                    centerCardRef.current,
+                    { scale: 0.9, opacity: 0.8 },
+                    { scale: 1, opacity: 1, ease: 'none' },
                     0
                 );
-            }
 
-            // Right Column Animation: Move Down and Fade Out
-            if (rightColumnRef.current) {
-                const rightCards = rightColumnRef.current.children;
-                tl.to(
-                    rightCards,
+                if (leftColumnRef.current) {
+                    tl.to(
+                        leftColumnRef.current.children,
+                        { yPercent: -100, opacity: 0, stagger: 0.1, ease: 'none' },
+                        0
+                    );
+                }
+
+                if (rightColumnRef.current) {
+                    tl.to(
+                        rightColumnRef.current.children,
+                        { yPercent: 100, opacity: 0, stagger: 0.1, ease: 'none' },
+                        0
+                    );
+                }
+            } else {
+                // Mobile: stacked cards with scroll-triggered stagger fade-up
+                gsap.fromTo(
+                    centerCardRef.current,
+                    { opacity: 0, y: 30, scale: 0.95 },
                     {
-                        yPercent: 100,
-                        opacity: 0,
-                        stagger: 0.1,
-                        ease: 'none',
-                    },
-                    0
+                        opacity: 1, y: 0, scale: 1,
+                        duration: 0.7, ease: 'power2.out',
+                        scrollTrigger: { trigger: centerCardRef.current, start: 'top 90%' },
+                    }
                 );
+
+                if (leftColumnRef.current) {
+                    gsap.fromTo(
+                        leftColumnRef.current.children,
+                        { opacity: 0, y: 30 },
+                        {
+                            opacity: 1, y: 0,
+                            duration: 0.6, ease: 'power2.out',
+                            stagger: 0.12,
+                            scrollTrigger: { trigger: leftColumnRef.current, start: 'top 92%' },
+                        }
+                    );
+                }
+
+                if (rightColumnRef.current) {
+                    gsap.fromTo(
+                        rightColumnRef.current.children,
+                        { opacity: 0, y: 30 },
+                        {
+                            opacity: 1, y: 0,
+                            duration: 0.6, ease: 'power2.out',
+                            stagger: 0.12,
+                            scrollTrigger: { trigger: rightColumnRef.current, start: 'top 92%' },
+                        }
+                    );
+                }
             }
         }, containerRef);
 
