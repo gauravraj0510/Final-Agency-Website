@@ -65,37 +65,35 @@ const Founders: React.FC = () => {
         }
       );
 
-      // Card 1 - slide in from left
+      // Card 1 - fade up (mobile-friendly, no rotateY or large x shifts)
       gsap.fromTo(
         card1Ref.current,
-        { opacity: 0, x: -100, rotateY: 15 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
-          x: 0,
-          rotateY: 0,
-          duration: 1.2,
-          ease: 'power3.out',
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: card1Ref.current,
-            start: 'top 80%',
+            start: 'top 90%',
           },
         }
       );
 
-      // Card 2 - slide in from right
+      // Card 2 - fade up with slight delay
       gsap.fromTo(
         card2Ref.current,
-        { opacity: 0, x: 100, rotateY: -15 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
-          x: 0,
-          rotateY: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          delay: 0.2,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          delay: 0.15,
           scrollTrigger: {
             trigger: card2Ref.current,
-            start: 'top 80%',
+            start: 'top 90%',
           },
         }
       );
