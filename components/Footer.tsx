@@ -210,20 +210,43 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Bottom row */}
-                <div className="mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <p className="text-sm text-gray-500">© {year} Avelix. All rights reserved.</p>
-                    <div className="flex flex-wrap gap-x-6 gap-y-2">
-                        {['Privacy', 'Terms'].map((item) => (
+                {/* Companies Act §12(3)(c) + Rule 26 — Mandatory Company Info */}
+                <div className="mt-14 pt-8 border-t border-white/10 space-y-4">
+                    <div className="space-y-1">
+                        <p className="text-xs text-gray-400 font-semibold tracking-wide uppercase">Avelix Private Limited</p>
+                        <p className="text-xs text-gray-500 leading-relaxed">
+                            Asteria - A Wing, Flat No. 906, Tower No. 1, Courtyard, Thane West, Thane, Maharashtra 400610, India
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            CIN: U62011MR2026PTC474269 &nbsp;&middot;&nbsp; GSTIN: 27ABFCA1098M1ZA &nbsp;&middot;&nbsp; PAN: ABFCA1098M
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            Phone: <a href="tel:+919136239673" className="hover:text-white transition-colors">+91 91362 39673</a> &nbsp;&middot;&nbsp;
+                            Email: <a href="mailto:hello@avelix.io" className="hover:text-white transition-colors">hello@avelix.io</a> &nbsp;&middot;&nbsp;
+                            Web: <a href="https://avelix.io" className="hover:text-white transition-colors">avelix.io</a>
+                        </p>
+                    </div>
+
+                    {/* Legal links */}
+                    <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
+                        {[
+                            { label: 'Privacy Policy', href: '/privacy' },
+                            { label: 'Terms of Use', href: '/terms' },
+                            { label: 'Cookie Policy', href: '/cookies' },
+                            { label: 'Grievance Redressal', href: '/grievance' },
+                            { label: 'Disclaimer', href: '/disclaimer' },
+                        ].map((item) => (
                             <a
-                                key={item}
-                                href="#"
-                                className="text-sm text-gray-500 hover:text-white transition-colors"
+                                key={item.label}
+                                href={item.href}
+                                className="text-xs text-gray-500 hover:text-white transition-colors"
                             >
-                                {item}
+                                {item.label}
                             </a>
                         ))}
                     </div>
+
+                    <p className="text-xs text-gray-600 pt-2">&copy; {year} Avelix Private Limited. All rights reserved.</p>
                 </div>
             </div>
         </footer>
