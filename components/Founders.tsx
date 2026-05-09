@@ -16,9 +16,9 @@ const Founders: React.FC = () => {
     {
       id: 1,
       name: 'Adarsh Tiwari',
-      title: 'Co-Founder & CEO/CMO',
+      title: 'Director & CEO/CMO',
       tagline: 'Strategy, growth & product vision',
-      bio: 'Co-founder & CEO of Avelix Private Limited, driving growth strategy and client success across 130+ delivered projects. Senior Product Manager at Strive Network and former Product Manager at Space Falcon ($6M raised). Specializes in blockchain, AI, and Web3 product management.',
+      bio: 'Director & CEO of Avelix Private Limited, driving growth strategy and client success across 130+ delivered projects. Senior Product Manager at Strive Network and former Product Manager at Space Falcon ($6M raised). Specializes in blockchain, AI, and Web3 product management.',
       image: '/adarsh-tiwari.png',
       achievements: ['130+ Projects', 'Senior PM', 'Web3 Expert'],
       icon: Brain,
@@ -31,9 +31,9 @@ const Founders: React.FC = () => {
     {
       id: 2,
       name: 'Gaurav Raj',
-      title: 'Co-Founder & CTO/COO',
+      title: 'Director & CTO/COO',
       tagline: 'Scaling operations & building products',
-      bio: 'Co-founder & CTO of Avelix Private Limited, managing 19+ team members and delivering 130+ projects in AI & Web3. Product developer at Walsh Wealth Ventures (US) and former Technical Head at Space Falcon ($6M raised). Hackathon winner and TEDx judge.',
+      bio: 'Director & CTO of Avelix Private Limited, managing 19+ team members and delivering 130+ projects in AI & Web3. Product developer at Walsh Wealth Ventures (US) and former Technical Head at Space Falcon ($6M raised). Hackathon winner and TEDx judge.',
       image: '/gaurav-raj.png',
       achievements: ['130+ Projects', '19+ Team', 'TEDx Judge'],
       icon: Code2,

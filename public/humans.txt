@@ -1,6 +1,6 @@
 /* TEAM */
-Co-Founder & CEO/CMO: Adarsh Tiwari
-Co-Founder & CTO/COO: Gaurav Raj
+Director & CEO/CMO: Adarsh Tiwari
+Director & CTO/COO: Gaurav Raj
 Contact: hello [at] avelix.io
 Location: Thane, Mumbai, Maharashtra, India
 
