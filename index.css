@@ -9,14 +9,16 @@
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  overflow-x: hidden;
+  /* clip prevents horizontal overflow without creating a scroll container,
+     so position: sticky still works correctly inside descendants */
+  overflow-x: clip;
 }
 
 body {
   font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #050505;
   color: #ffffff;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
