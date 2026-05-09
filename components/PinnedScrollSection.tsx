@@ -176,6 +176,12 @@ const PinnedScrollSection: React.FC = () => {
                 <Card title="MLOps & Monitoring" desc="Deploy safely, track performance, and continuously improve models in production." />
                 <Card title="AI Governance & Security" desc="Policies, guardrails, and compliance so AI is reliable, safe, and on-brand." />
             </div>
+
+            {/* Bottom fade — merges this section's black bg into the next section (#050505) */}
+            <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-40 z-0 bg-gradient-to-b from-transparent to-[#050505]"
+                aria-hidden="true"
+            />
         </section>
     );
 };

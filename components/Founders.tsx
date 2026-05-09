@@ -112,6 +112,12 @@ const Founders: React.FC = () => {
         background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
       }}
     >
+      {/* Top fade — merges previous section's black bg into this section's #050505 */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 z-0 bg-gradient-to-b from-black to-transparent"
+        aria-hidden="true"
+      />
+
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Gradient orbs */}
