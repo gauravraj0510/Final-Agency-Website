@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import {
   Sparkles,
   ScanSearch,
@@ -272,12 +272,12 @@ const Hero: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* Scroll cue */}
+      {/* Scroll cue — desktop only, mobile users naturally scroll */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs text-gray-500 flex flex-col items-center gap-2"
+        className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 text-xs text-gray-500 flex-col items-center gap-2"
       >
         Scroll to explore
         <motion.div
@@ -297,6 +297,10 @@ const Hero: React.FC = () => {
 interface OfferingBlockProps {
   readonly stage: LifecycleStage;
   readonly index: number;
+  readonly total: number;
+  readonly progress: MotionValue<number>;
+  readonly range: [number, number];
+  readonly targetScale: number;
 }
 
 const visualForStage = (id: number): React.ReactNode => {
@@ -314,26 +318,32 @@ const visualForStage = (id: number): React.ReactNode => {
   }
 };
 
-const OfferingBlock: React.FC<OfferingBlockProps> = ({ stage, index }) => {
+const OfferingBlock: React.FC<OfferingBlockProps> = ({
+  stage,
+  index,
+  progress,
+  range,
+  targetScale,
+}) => {
   const meta = offeringMeta[stage.id];
   const Icon = meta.icon;
   const reversed = index % 2 === 1;
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const visualY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const numberScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.05, 0.95]);
+
+  // Stacking scale — driven by the overall page scroll progress
+  const scale = useTransform(progress, range, [1, targetScale]);
+  const numberScale = useTransform(progress, range, [1, 0.95]);
 
   return (
     <section
-      ref={containerRef}
-      className="relative py-24 md:py-32 px-4"
+      id={`offering-${stage.id}`}
+      className="relative lg:sticky lg:top-0 lg:min-h-screen lg:flex lg:items-center px-4 py-10 md:py-16"
     >
-      <div className="max-w-6xl mx-auto">
+      <motion.div
+        style={{ scale }}
+        className="origin-top w-full lg:bg-[#050505]"
+      >
         <div
-          className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center max-w-6xl mx-auto lg:py-12 ${
             reversed ? "lg:[&>*:first-child]:order-2" : ""
           }`}
         >
@@ -434,11 +444,8 @@ const OfferingBlock: React.FC<OfferingBlockProps> = ({ stage, index }) => {
             </div>
           </motion.div>
 
-          {/* Visual column with parallax */}
-          <motion.div
-            style={{ y: visualY }}
-            className="relative"
-          >
+          {/* Visual column */}
+          <div className="relative">
             {/* Glow halo */}
             <div
               className="absolute -inset-8 rounded-[3rem] opacity-30 blur-3xl pointer-events-none"
@@ -480,10 +487,43 @@ const OfferingBlock: React.FC<OfferingBlockProps> = ({ stage, index }) => {
                 ))}
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Sticky-stack wrapper — drives stacking scale for each offering     */
+/* ------------------------------------------------------------------ */
+
+const OfferingsStack: React.FC = () => {
+  const stackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: stackRef,
+    offset: ["start start", "end end"],
+  });
+  const total = lifecycleStages.length;
+
+  return (
+    <div ref={stackRef} className="relative">
+      {lifecycleStages.map((stage, idx) => {
+        const targetScale = Math.max(0.5, 1 - (total - idx - 1) * 0.05);
+        const range: [number, number] = [idx / total, 1];
+        return (
+          <OfferingBlock
+            key={stage.id}
+            stage={stage}
+            index={idx}
+            total={total}
+            progress={scrollYProgress}
+            range={range}
+            targetScale={targetScale}
+          />
+        );
+      })}
+    </div>
   );
 };
 
@@ -627,12 +667,93 @@ const CTASection: React.FC = () => (
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
 
+const OFFERINGS_STRUCTURED_DATA: ReadonlyArray<Record<string, unknown>> = [
+  // Service catalog as ItemList
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": "https://avelix.io/offerings#offerings-list",
+    name: "Avelix AI Offerings",
+    description:
+      "Avelix delivers four AI offerings — AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization — across India and global markets.",
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    numberOfItems: 4,
+    itemListElement: lifecycleStages.map((stage, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      url: `https://avelix.io/offerings#offering-${stage.id}`,
+      item: {
+        "@type": "Service",
+        "@id": `https://avelix.io/offerings#offering-${stage.id}`,
+        name: stage.title,
+        description: stage.description,
+        url: `https://avelix.io/offerings#offering-${stage.id}`,
+        serviceType: stage.title,
+        category: stage.name,
+        provider: { "@id": "https://avelix.io/#organization" },
+        areaServed: [
+          { "@type": "Country", name: "India" },
+          { "@type": "Country", name: "United States" },
+          { "@type": "Country", name: "United Kingdom" },
+          { "@type": "Country", name: "United Arab Emirates" },
+          { "@type": "Country", name: "Singapore" },
+          { "@type": "Country", name: "Australia" },
+          { "@type": "Country", name: "Canada" },
+        ],
+        availableChannel: {
+          "@type": "ServiceChannel",
+          serviceUrl: "https://avelix.io/questionnaire",
+          servicePhone: "+91-91362-39673",
+          serviceSmsNumber: "+91-91362-39673",
+          availableLanguage: ["English", "Hindi"],
+        },
+      },
+    })),
+  },
+  // Page-specific WebPage + breadcrumb
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://avelix.io/offerings#webpage",
+    url: "https://avelix.io/offerings",
+    name: "Offerings — AI Auditing, Automation & Custom Solutions | Avelix",
+    isPartOf: { "@id": "https://avelix.io/#website" },
+    about: { "@id": "https://avelix.io/#organization" },
+    description:
+      "Explore Avelix's four AI offerings: AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization.",
+    inLanguage: "en-IN",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://avelix.io/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Offerings",
+          item: "https://avelix.io/offerings",
+        },
+      ],
+    },
+  },
+];
+
 const OfferingsPage: React.FC = () => {
   useDocumentMeta({
     title: "Offerings — AI Auditing, Automation & Custom Solutions | Avelix",
     description:
-      "Explore Avelix's four AI offerings: AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization. Plug in where you need help today and scale when you're ready.",
+      "Explore Avelix's four AI offerings: AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization. Plug in where you need help today and scale when you're ready. Based in Mumbai, India — serving clients across India, US, UK, UAE, Singapore, Australia, Canada.",
     canonical: "https://avelix.io/offerings",
+    keywords:
+      "AI offerings, AI auditing, AI automations, custom AI solutions, operations optimization, AI consulting India, AI agency Mumbai, RAG, LLM, AI agents, workflow automation, business AI, Avelix",
+    ogTitle: "Avelix Offerings — Four AI Services. One Operating Layer.",
+    ogDescription:
+      "AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization. From the first audit to long-term scaling, Avelix delivers AI under one model.",
+    structuredData: OFFERINGS_STRUCTURED_DATA,
   });
 
   // Smooth-scroll anchor handling for in-page hashes (#offering-1, etc.)
@@ -649,18 +770,14 @@ const OfferingsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white overflow-hidden">
+    <div className="relative min-h-screen bg-[#050505] text-white">
       <PageBackground />
       <Navigation />
 
       <main className="relative z-10">
         <Hero />
 
-        {lifecycleStages.map((stage, idx) => (
-          <div key={stage.id} id={`offering-${stage.id}`}>
-            <OfferingBlock stage={stage} index={idx} />
-          </div>
-        ))}
+        <OfferingsStack />
 
         <ProcessSection />
         <CTASection />
