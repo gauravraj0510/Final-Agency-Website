@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { auth, getIdToken } from "../lib/firebase-client";
 import { onAuthStateChanged } from "firebase/auth";
 import Navigation from "../components/Navigation";
+import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 const API_BASE =
   typeof import.meta.env?.VITE_API_BASE_URL === "string" &&
@@ -325,6 +326,12 @@ const AnalysisDashboard: React.FC = () => {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isReused, setIsReused] = useState(false);
+
+  useDocumentMeta({
+    title: "Your AI Snapshot Report — Avelix",
+    description:
+      "Your personalized AI Operational Assessment results — strengths, bottlenecks, and high-impact opportunities.",
+  });
 
   useEffect(() => {
     if (!docId) {

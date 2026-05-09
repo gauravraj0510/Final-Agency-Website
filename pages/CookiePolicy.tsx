@@ -2,7 +2,11 @@ import React from "react";
 import LegalPage from "./LegalPage";
 
 const CookiePolicy: React.FC = () => (
-  <LegalPage title="Cookie Policy">
+  <LegalPage
+    title="Cookie Policy"
+    description="What cookies Avelix uses on avelix.io, why, and how you can control them. DPDP and ePrivacy compliant."
+    canonical="https://avelix.io/cookies"
+  >
     <p className="text-sm text-gray-500">
       <strong>Effective Date:</strong> 1 May 2026
     </p>

@@ -2,7 +2,11 @@ import React from "react";
 import LegalPage from "./LegalPage";
 
 const Disclaimer: React.FC = () => (
-  <LegalPage title="Disclaimer">
+  <LegalPage
+    title="Disclaimer"
+    description="Disclaimer regarding information published on avelix.io. Avelix does not provide professional advice through this Site."
+    canonical="https://avelix.io/disclaimer"
+  >
     <p>The information provided on <strong>avelix.io</strong> (the &ldquo;Site&rdquo;) is for general informational purposes only.</p>
 
     <h2>No professional advice</h2>

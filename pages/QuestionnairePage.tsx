@@ -5,6 +5,7 @@ import { questions } from "../questionnaire/questions";
 import { auth, signInWithGoogle, handleRedirectResult } from "../lib/firebase-client";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import Navigation from "../components/Navigation";
+import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 const API_BASE =
   typeof import.meta.env?.VITE_API_BASE_URL === "string" && import.meta.env.VITE_API_BASE_URL
@@ -55,6 +56,13 @@ const QuestionnairePage: React.FC = () => {
   const [signInError, setSignInError] = useState<string | null>(null);
   const [isSignedIn, setIsSignedIn] = useState(!!auth.currentUser);
   const [existingAnalysisDocId, setExistingAnalysisDocId] = useState<string | null>(null);
+
+  useDocumentMeta({
+    title: "Free AI Operational Assessment — Avelix",
+    description:
+      "Take our free 5-minute AI Operational Assessment. Get a personalized AI adoption snapshot report with high-impact automation opportunities and a clear action plan.",
+    canonical: "https://avelix.io/questionnaire",
+  });
 
   /* Track auth state and check for existing analysis */
   useEffect(() => {

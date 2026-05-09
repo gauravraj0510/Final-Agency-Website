@@ -1,13 +1,28 @@
 import React from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
+import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 interface LegalPageProps {
   readonly title: string;
+  readonly description?: string;
+  readonly canonical?: string;
   readonly children: React.ReactNode;
 }
 
-const LegalPage: React.FC<LegalPageProps> = ({ title, children }) => (
+const LegalPage: React.FC<LegalPageProps> = ({
+  title,
+  description,
+  canonical,
+  children,
+}) => {
+  useDocumentMeta({
+    title: `${title} — Avelix`,
+    description,
+    canonical,
+  });
+
+  return (
   <div className="min-h-screen bg-[#050505] text-white">
     <Navigation />
     <main className="pt-28 pb-20 px-4">
@@ -22,6 +37,7 @@ const LegalPage: React.FC<LegalPageProps> = ({ title, children }) => (
     </main>
     <Footer />
   </div>
-);
+  );
+};
 
 export default LegalPage;

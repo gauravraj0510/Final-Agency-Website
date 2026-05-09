@@ -2,7 +2,11 @@ import React from "react";
 import LegalPage from "./LegalPage";
 
 const TermsOfUse: React.FC = () => (
-  <LegalPage title="Terms of Use">
+  <LegalPage
+    title="Terms of Use"
+    description="Terms governing your access to and use of avelix.io. Operated by Avelix Private Limited under the laws of India."
+    canonical="https://avelix.io/terms"
+  >
     <p className="text-sm text-gray-500">
       <strong>Effective Date:</strong> 1 May 2026 &nbsp;|&nbsp; <strong>Last Updated:</strong> 6 May 2026
     </p>

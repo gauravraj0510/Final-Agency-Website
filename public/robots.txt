@@ -1,5 +1,46 @@
+# robots.txt for avelix.io
+# Last updated: 2026-05-10
+
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /analysis/
 
+# Block AI training crawlers (opt-out)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+# Allow major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Sitemap
 Sitemap: https://avelix.io/sitemap.xml
+Host: https://avelix.io

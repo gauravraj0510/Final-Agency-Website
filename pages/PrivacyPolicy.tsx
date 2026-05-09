@@ -2,7 +2,11 @@ import React from "react";
 import LegalPage from "./LegalPage";
 
 const PrivacyPolicy: React.FC = () => (
-  <LegalPage title="Privacy Policy">
+  <LegalPage
+    title="Privacy Policy"
+    description="How Avelix Private Limited collects, uses, and protects your personal data — DPDP Act 2023 and IT Rules 2011 compliant."
+    canonical="https://avelix.io/privacy"
+  >
     <p className="text-sm text-gray-500">
       <strong>Effective Date:</strong> 1 May 2026 &nbsp;|&nbsp; <strong>Last Updated:</strong> 6 May 2026
     </p>

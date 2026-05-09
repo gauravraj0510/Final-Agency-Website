@@ -1,0 +1,19 @@
+/* TEAM */
+Co-Founder & CEO/CMO: Adarsh Tiwari
+Co-Founder & CTO/COO: Gaurav Raj
+Contact: hello [at] avelix.io
+Location: Thane, Mumbai, Maharashtra, India
+
+/* SITE */
+Last update: 2026/05/10
+Language: English
+Doctype: HTML5
+Standards: HTML5, CSS3, ES2022
+Components: React 19, Vite 6, GSAP, Three.js, Tailwind CSS, Framer Motion
+Software: Vercel, Firebase, Google Gemini
+
+/* COMPANY */
+Legal Name: AVELIX PRIVATE LIMITED
+CIN: U62011MR2026PTC474269
+GSTIN: 27ABFCA1098M1ZA
+Registered: Maharashtra, India

@@ -1,0 +1,37 @@
+{
+  "name": "Avelix — AI Consulting & Automation Agency",
+  "short_name": "Avelix",
+  "description": "AI-first consulting and software agency. AI auditing, custom AI solutions, workflow automation, and digital transformation.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "technology"],
+  "icons": [
+    {
+      "src": "/logo-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI Operational Assessment",
+      "short_name": "Assessment",
+      "description": "Take the free AI Operational Assessment",
+      "url": "/questionnaire",
+      "icons": [{ "src": "/logo-icon.png", "sizes": "192x192" }]
+    }
+  ]
+}

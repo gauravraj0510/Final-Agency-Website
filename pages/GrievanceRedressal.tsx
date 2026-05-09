@@ -2,7 +2,11 @@ import React from "react";
 import LegalPage from "./LegalPage";
 
 const GrievanceRedressal: React.FC = () => (
-  <LegalPage title="Grievance Redressal">
+  <LegalPage
+    title="Grievance Redressal"
+    description="Avelix Private Limited Grievance Officer details, SLAs, and escalation paths under the IT Rules 2021 and DPDP Act 2023."
+    canonical="https://avelix.io/grievance"
+  >
     <p>
       In compliance with the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 and the Digital Personal Data Protection Act, 2023, <strong>AVELIX PRIVATE LIMITED</strong> has appointed the following Grievance Officer.
     </p>
