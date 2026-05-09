@@ -52,7 +52,7 @@ const PinnedScrollSection: React.FC = () => {
                     );
                 }
             }
-            // Mobile: no GSAP animation — cards render naturally in their final
+            // Mobile: no GSAP animation - cards render naturally in their final
             // visible state. Earlier scroll-triggered fade-ins were unreliable
             // (cards remained invisible until scrolled fully past) so we now
             // rely on plain rendering on mobile.
@@ -144,7 +144,7 @@ const PinnedScrollSection: React.FC = () => {
                 <Card title="AI Governance & Security" desc="Policies, guardrails, and compliance so AI is reliable, safe, and on-brand." />
             </div>
 
-            {/* Bottom fade — merges this section's black bg into the next section (#050505) */}
+            {/* Bottom fade - merges this section's black bg into the next section (#050505) */}
             <div
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-40 z-0 bg-gradient-to-b from-transparent to-[#050505]"
                 aria-hidden="true"

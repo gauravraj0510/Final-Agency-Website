@@ -4,7 +4,7 @@ import LegalPage from "./LegalPage";
 const PrivacyPolicy: React.FC = () => (
   <LegalPage
     title="Privacy Policy"
-    description="How Avelix Private Limited collects, uses, and protects your personal data — DPDP Act 2023 and IT Rules 2011 compliant."
+    description="How Avelix Private Limited collects, uses, and protects your personal data - DPDP Act 2023 and IT Rules 2011 compliant."
     canonical="https://avelix.io/privacy"
   >
     <p className="text-sm text-gray-500">
@@ -12,7 +12,7 @@ const PrivacyPolicy: React.FC = () => (
     </p>
 
     <p>
-      This Privacy Policy describes how <strong>AVELIX PRIVATE LIMITED</strong> (&ldquo;Avelix&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses, stores, and discloses your personal information when you visit avelix.io or engage with our services.
+      This Privacy Policy describes how <strong>AVELIX PRIVATE LIMITED</strong> ("Avelix", "we", "us") collects, uses, stores, and discloses your personal information when you visit avelix.io or engage with our services.
     </p>
     <p>
       This policy is published in accordance with the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011 and the Digital Personal Data Protection Act, 2023.
@@ -32,7 +32,7 @@ const PrivacyPolicy: React.FC = () => (
     <ul>
       <li>To respond to enquiries and engagement requests</li>
       <li>To provide and improve our consulting and advisory services</li>
-      <li>To send invoices and tax documents (where you&rsquo;ve engaged us)</li>
+      <li>To send invoices and tax documents (where you've engaged us)</li>
       <li>To send service-related communications</li>
       <li>To comply with applicable laws (Companies Act, IT Act, GST, FEMA)</li>
       <li>To analyse website traffic and improve user experience</li>
@@ -76,7 +76,7 @@ const PrivacyPolicy: React.FC = () => (
       <li><strong>Nominate</strong> another person to exercise these rights on your behalf</li>
       <li><strong>Lodge a grievance</strong> with our Grievance Officer (see <a href="/grievance">Grievance Redressal</a> page)</li>
     </ul>
-    <p>To exercise any of these rights, email <a href="mailto:hello@avelix.io">hello@avelix.io</a> with the subject &ldquo;Data Rights Request&rdquo; and we will respond within 30 days.</p>
+    <p>To exercise any of these rights, email <a href="mailto:hello@avelix.io">hello@avelix.io</a> with the subject "Data Rights Request" and we will respond within 30 days.</p>
 
     <h2>8. Security</h2>
     <p>We use reasonable administrative, technical and physical safeguards (HTTPS, access controls, encrypted storage) to protect your data. No method is 100% secure; we cannot guarantee absolute security.</p>

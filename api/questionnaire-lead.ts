@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-const MAX_BODY_BYTES = 32_768; // 32KB — allows long textarea answers across 16 questions
+const MAX_BODY_BYTES = 32_768; // 32KB - allows long textarea answers across 16 questions
 
 const ALLOWED_ORIGINS: readonly string[] = [
   "https://avelix.io",

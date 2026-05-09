@@ -44,7 +44,7 @@ interface AnalysisResult {
 
 type PageState = "loading" | "ready" | "error" | "auth-required";
 
-/* Decorative background — matches homepage "Meet the Visionaries" section */
+/* Decorative background - matches homepage "Meet the Visionaries" section */
 const PageBackground: React.FC = () => (
   <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
     <div
@@ -328,9 +328,9 @@ const AnalysisDashboard: React.FC = () => {
   const [isReused, setIsReused] = useState(false);
 
   useDocumentMeta({
-    title: "Your AI Snapshot Report — Avelix",
+    title: "Your AI Snapshot Report - Avelix",
     description:
-      "Your personalized AI Operational Assessment results — strengths, bottlenecks, and high-impact opportunities.",
+      "Your personalized AI Operational Assessment results - strengths, bottlenecks, and high-impact opportunities.",
   });
 
   useEffect(() => {
@@ -486,7 +486,7 @@ const AnalysisDashboard: React.FC = () => {
             Your Automation Snapshot
           </h1>
           <p className="text-sm text-white/50">
-            Free preview — detailed roadmap available with a paid consultation
+            Free preview - detailed roadmap available with a paid consultation
           </p>
         </motion.div>
 

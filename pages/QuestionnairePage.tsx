@@ -18,15 +18,15 @@ type Answers = Record<string, AnswerValue>;
 type StepState = "idle" | "submitting" | "success" | "error";
 type PostSubmitState = "offer" | "signing-in" | "sign-in-error";
 
-/* Decorative background — matches homepage "Meet the Visionaries" section */
+/* Decorative background - matches homepage "Meet the Visionaries" section */
 const PageBackground: React.FC = () => (
   <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    {/* Purple gradient orb — top-left */}
+    {/* Purple gradient orb - top-left */}
     <div
       className="absolute w-[600px] h-[600px] rounded-full blur-[150px] opacity-20"
       style={{ background: 'radial-gradient(circle, #7c3aed 0%, transparent 70%)', top: '10%', left: '-10%' }}
     />
-    {/* Violet orb — bottom-right */}
+    {/* Violet orb - bottom-right */}
     <div
       className="absolute w-[500px] h-[500px] rounded-full blur-[120px] opacity-15"
       style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)', bottom: '20%', right: '-5%' }}
@@ -58,7 +58,7 @@ const QuestionnairePage: React.FC = () => {
   const [existingAnalysisDocId, setExistingAnalysisDocId] = useState<string | null>(null);
 
   useDocumentMeta({
-    title: "Free AI Operational Assessment — Avelix",
+    title: "Free AI Operational Assessment - Avelix",
     description:
       "Take our free 5-minute AI Operational Assessment. Get a personalized AI adoption snapshot report with high-impact automation opportunities and a clear action plan.",
     canonical: "https://avelix.io/questionnaire",
@@ -422,7 +422,7 @@ const QuestionnairePage: React.FC = () => {
               </label>
               <textarea
                 className="w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/80 focus:border-transparent min-h-[80px] resize-vertical"
-                placeholder="E.g. We follow up manually on WhatsApp and update deals in our CRM once a week…"
+                placeholder="E.g. We follow up manually on WhatsApp and update deals in our CRM once a week..."
                 value={
                   (answers["leadFollowup_details"] as string | undefined) ?? ""
                 }
@@ -477,7 +477,7 @@ const QuestionnairePage: React.FC = () => {
         sessionStorage.removeItem("avelix_docId");
         navigate(`/analysis/${docId}`);
       }
-      // If null, redirect was triggered — page will reload
+      // If null, redirect was triggered - page will reload
     } catch (err) {
       console.error("Account switch failed:", err);
       sessionStorage.removeItem("avelix_docId");
@@ -504,11 +504,11 @@ const QuestionnairePage: React.FC = () => {
 
       const user = await signInWithGoogle();
       if (user) {
-        // Popup succeeded — navigate immediately
+        // Popup succeeded - navigate immediately
         sessionStorage.removeItem("avelix_docId");
         navigate(`/analysis/${docId}`);
       }
-      // If user is null, redirect was triggered — page will reload
+      // If user is null, redirect was triggered - page will reload
     } catch (err) {
       console.error("Google sign-in failed:", err);
       sessionStorage.removeItem("avelix_docId");

@@ -7,7 +7,7 @@ const Disclaimer: React.FC = () => (
     description="Disclaimer regarding information published on avelix.io. Avelix does not provide professional advice through this Site."
     canonical="https://avelix.io/disclaimer"
   >
-    <p>The information provided on <strong>avelix.io</strong> (the &ldquo;Site&rdquo;) is for general informational purposes only.</p>
+    <p>The information provided on <strong>avelix.io</strong> (the "Site") is for general informational purposes only.</p>
 
     <h2>No professional advice</h2>
     <p>Nothing on this Site constitutes professional advice, business advice, legal advice, tax advice, financial advice, or any other regulated advice. Avelix does not establish an advisor-client relationship through this Site.</p>
@@ -17,7 +17,7 @@ const Disclaimer: React.FC = () => (
     <p>While we strive to keep information on the Site accurate and current, Avelix makes no representations or warranties about the completeness, accuracy, reliability, suitability, or availability of any information or content. Any reliance you place on such information is at your own risk.</p>
 
     <h2>Implementation</h2>
-    <p>Avelix provides advisory and consultation services. Outcomes from acting on Avelix&rsquo;s recommendations depend on implementation by the client or third parties. Avelix is not liable for implementation results.</p>
+    <p>Avelix provides advisory and consultation services. Outcomes from acting on Avelix's recommendations depend on implementation by the client or third parties. Avelix is not liable for implementation results.</p>
 
     <h2>External links</h2>
     <p>The Site may contain links to third-party websites. These are provided for convenience only. Avelix does not endorse and is not responsible for the content or practices of these websites.</p>

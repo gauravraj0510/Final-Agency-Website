@@ -115,7 +115,7 @@ const Navigation: React.FC = () => {
             Get started
           </a>
 
-          {/* Login icon (desktop) — shown when logged out */}
+          {/* Login icon (desktop) - shown when logged out */}
           {!user && (
             <button
               type="button"
@@ -130,7 +130,7 @@ const Navigation: React.FC = () => {
             </button>
           )}
 
-          {/* User avatar dropdown (desktop) — rightmost */}
+          {/* User avatar dropdown (desktop) - rightmost */}
           {user && (
             <div className="relative hidden md:block" ref={dropdownRef}>
               <button

@@ -357,13 +357,13 @@ const Hero: React.FC = () => {
 
           <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] leading-[1.15] font-bold tracking-tight mb-6 max-w-4xl">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-white to-gray-500">
-              Struggling to leverage AI in your business?
+              Stuck on where AI fits in your business?
             </span>
           </h1>
 
 
           <p className="text-base md:text-lg font-normal max-w-xl leading-relaxed mb-6 text-gray-400">
-            Tell us where you're stuck—take a quick assessment and we'll show you the next step.
+            Tell us where you're stuck-take a quick assessment and we'll show you the next step.
           </p>
 
           <a

@@ -126,7 +126,7 @@ const analysisResponseSchema: Schema = {
         },
         required: ["title", "description", "impact"],
       },
-      description: "Top 3 automation opportunities (keep brief — detailed report is paid)",
+      description: "Top 3 automation opportunities (keep brief - detailed report is paid)",
     },
     criticalBottleneck: {
       type: SchemaType.STRING,
@@ -169,7 +169,7 @@ async function checkRateLimit(
     return true;
   } catch (err) {
     console.error("Rate limit check failed (allowing request):", err);
-    return true; // fail open — don't block users if rate limiting breaks
+    return true; // fail open - don't block users if rate limiting breaks
   }
 }
 
@@ -334,7 +334,7 @@ export default async function handler(
     const prompt = `You are an AI business automation consultant for Avelix, an AI consultancy.
 
 Analyze these questionnaire answers and provide a BRIEF operational assessment.
-Keep it concise — this is a free preview. The detailed report is a paid service.
+Keep it concise - this is a free preview. The detailed report is a paid service.
 
 QUESTIONNAIRE ANSWERS:
 ${JSON.stringify(answers, null, 2)}
@@ -345,8 +345,8 @@ RULES:
 - Diagnosis should be 2-3 sentences identifying the core issue
 - List exactly 3 top automation opportunities with brief descriptions and impact estimates
 - Identify the single critical bottleneck
-- Keep everything concise and actionable — no fluff
-- Do NOT give a full detailed roadmap — that is the paid tier`;
+- Keep everything concise and actionable - no fluff
+- Do NOT give a full detailed roadmap - that is the paid tier`;
 
     let analysis: Record<string, unknown>;
     try {

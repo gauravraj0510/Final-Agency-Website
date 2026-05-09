@@ -17,7 +17,7 @@ const LegalPage: React.FC<LegalPageProps> = ({
   children,
 }) => {
   useDocumentMeta({
-    title: `${title} — Avelix`,
+    title: `${title} - Avelix`,
     description,
     canonical,
   });

@@ -56,7 +56,7 @@ const offeringMeta: Record<number, OfferingMeta> = {
       "Founders evaluating where AI moves the needle",
       "Operations leaders fighting fragmented workflows",
     ],
-    outcome: "A clear, executable plan — not another slide deck.",
+    outcome: "A clear, executable plan - not another slide deck.",
     accentFrom: "#a855f7",
     accentTo: "#7c3aed",
   },
@@ -110,14 +110,14 @@ const offeringMeta: Record<number, OfferingMeta> = {
       "Teams that want to stay ahead of model changes",
       "Companies treating AI as a long-term operating layer",
     ],
-    outcome: "Compounding returns — your AI gets better with time.",
+    outcome: "Compounding returns - your AI gets better with time.",
     accentFrom: "#a855f7",
     accentTo: "#c084fc",
   },
 };
 
 /* ------------------------------------------------------------------ */
-/* Background canvas — gradient orbs + grid                           */
+/* Background canvas - gradient orbs + grid                           */
 /* ------------------------------------------------------------------ */
 
 const PageBackground: React.FC = () => (
@@ -215,7 +215,7 @@ const Hero: React.FC = () => {
         >
           From the first audit to long-term optimisation, every Avelix
           engagement plugs into a single, coherent AI delivery model. Pick the
-          piece you need today — the rest scales when you&rsquo;re ready.
+          piece you need today - the rest scales when you're ready.
         </motion.p>
 
         <motion.div
@@ -272,7 +272,7 @@ const Hero: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* Scroll cue — desktop only, mobile users naturally scroll */}
+      {/* Scroll cue - desktop only, mobile users naturally scroll */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -291,7 +291,7 @@ const Hero: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Offering — sticky-pinned block, alternating layout                 */
+/* Offering - sticky-pinned block, alternating layout                 */
 /* ------------------------------------------------------------------ */
 
 interface OfferingBlockProps {
@@ -329,7 +329,7 @@ const OfferingBlock: React.FC<OfferingBlockProps> = ({
   const Icon = meta.icon;
   const reversed = index % 2 === 1;
 
-  // Stacking scale — driven by the overall page scroll progress
+  // Stacking scale - driven by the overall page scroll progress
   const scale = useTransform(progress, range, [1, targetScale]);
   const numberScale = useTransform(progress, range, [1, 0.95]);
 
@@ -372,7 +372,7 @@ const OfferingBlock: React.FC<OfferingBlockProps> = ({
                 </span>
               </motion.div>
 
-              {/* Vertical divider + label stack — editorial */}
+              {/* Vertical divider + label stack - editorial */}
               <div className="flex items-stretch gap-3 pb-2">
                 <span
                   className="block w-px self-stretch"
@@ -495,7 +495,7 @@ const OfferingBlock: React.FC<OfferingBlockProps> = ({
 };
 
 /* ------------------------------------------------------------------ */
-/* Sticky-stack wrapper — drives stacking scale for each offering     */
+/* Sticky-stack wrapper - drives stacking scale for each offering     */
 /* ------------------------------------------------------------------ */
 
 const OfferingsStack: React.FC = () => {
@@ -589,7 +589,7 @@ const ProcessSection: React.FC = () => (
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="relative h-full rounded-2xl overflow-hidden p-[1px] group"
             >
-              {/* Animated rotating border — matches Elevate Your Vision cards */}
+              {/* Animated rotating border - matches Elevate Your Vision cards */}
               <span
                 className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0a0a0a_0%,#a855f7_50%,#0a0a0a_100%)]"
                 aria-hidden
@@ -638,7 +638,7 @@ const CTASection: React.FC = () => (
             Not sure which offering fits?
           </h2>
           <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto">
-            Take our free 5-minute AI Operational Assessment. We&rsquo;ll
+            Take our free 5-minute AI Operational Assessment. We'll
             generate a personalised snapshot showing exactly which offering(s)
             will move the needle for your business.
           </p>
@@ -675,7 +675,7 @@ const OFFERINGS_STRUCTURED_DATA: ReadonlyArray<Record<string, unknown>> = [
     "@id": "https://avelix.io/offerings#offerings-list",
     name: "Avelix AI Offerings",
     description:
-      "Avelix delivers four AI offerings — AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization — across India and global markets.",
+      "Avelix delivers four AI offerings - AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization - across India and global markets.",
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     numberOfItems: 4,
     itemListElement: lifecycleStages.map((stage, idx) => ({
@@ -716,7 +716,7 @@ const OFFERINGS_STRUCTURED_DATA: ReadonlyArray<Record<string, unknown>> = [
     "@type": "WebPage",
     "@id": "https://avelix.io/offerings#webpage",
     url: "https://avelix.io/offerings",
-    name: "Offerings — AI Auditing, Automation & Custom Solutions | Avelix",
+    name: "Offerings - AI Auditing, Automation & Custom Solutions | Avelix",
     isPartOf: { "@id": "https://avelix.io/#website" },
     about: { "@id": "https://avelix.io/#organization" },
     description:
@@ -744,13 +744,13 @@ const OFFERINGS_STRUCTURED_DATA: ReadonlyArray<Record<string, unknown>> = [
 
 const OfferingsPage: React.FC = () => {
   useDocumentMeta({
-    title: "Offerings — AI Auditing, Automation & Custom Solutions | Avelix",
+    title: "Offerings - AI Auditing, Automation & Custom Solutions | Avelix",
     description:
-      "Explore Avelix's four AI offerings: AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization. Plug in where you need help today and scale when you're ready. Based in Mumbai, India — serving clients across India, US, UK, UAE, Singapore, Australia, Canada.",
+      "Explore Avelix's four AI offerings: AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization. Plug in where you need help today and scale when you're ready. Based in Mumbai, India - serving clients across India, US, UK, UAE, Singapore, Australia, Canada.",
     canonical: "https://avelix.io/offerings",
     keywords:
       "AI offerings, AI auditing, AI automations, custom AI solutions, operations optimization, AI consulting India, AI agency Mumbai, RAG, LLM, AI agents, workflow automation, business AI, Avelix",
-    ogTitle: "Avelix Offerings — Four AI Services. One Operating Layer.",
+    ogTitle: "Avelix Offerings - Four AI Services. One Operating Layer.",
     ogDescription:
       "AI Auditing, AI Automations, Custom AI Solutions, and Operations Optimization. From the first audit to long-term scaling, Avelix delivers AI under one model.",
     structuredData: OFFERINGS_STRUCTURED_DATA,

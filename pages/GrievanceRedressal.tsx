@@ -25,7 +25,7 @@ const GrievanceRedressal: React.FC = () => (
     </table>
 
     <h2>How to file a grievance</h2>
-    <p>Send an email to <a href="mailto:hello@avelix.io">hello@avelix.io</a> with the subject line &ldquo;Grievance&rdquo; and include:</p>
+    <p>Send an email to <a href="mailto:hello@avelix.io">hello@avelix.io</a> with the subject line "Grievance" and include:</p>
     <ol>
       <li>Your full name and contact details</li>
       <li>A clear description of the grievance</li>
@@ -44,7 +44,7 @@ const GrievanceRedressal: React.FC = () => (
     <h2>Escalation</h2>
     <p>If you are not satisfied with the resolution provided by the Grievance Officer, you may escalate the matter to:</p>
     <ul>
-      <li><strong>The Data Protection Board of India</strong> (under the DPDP Act, 2023) &mdash; once operational</li>
+      <li><strong>The Data Protection Board of India</strong> (under the DPDP Act, 2023) - once operational</li>
       <li><strong>The Ministry of Electronics &amp; Information Technology</strong> for IT Rules-related grievances</li>
       <li><strong>The Consumer Helpline</strong> at <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener noreferrer">consumerhelpline.gov.in</a> or 1915 for consumer-related grievances</li>
     </ul>

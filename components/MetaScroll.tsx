@@ -114,7 +114,7 @@ export const CodeEditor = () => {
                 </div>
                 <div className="flex items-center gap-2 text-gray-500 text-xs">
                     <span>□</span>
-                    <span>—</span>
+                    <span>-</span>
                     <span>×</span>
                 </div>
             </div>
@@ -532,7 +532,7 @@ export const CustomerLifecycleSection = () => {
                             </div>
                         </div>
 
-                        {/* Continuity arrow — sits at the bottom of the pinned DNA container */}
+                        {/* Continuity arrow - sits at the bottom of the pinned DNA container */}
                         <div
                             className="absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-col items-center gap-2 pointer-events-none"
                             aria-hidden="true"
@@ -588,13 +588,13 @@ export const CustomerLifecycleSection = () => {
                 </div>
             </section>
 
-            {/* Process Steps Cards — shown on all screens (mobile-only originally; now also below desktop infinity for richer desktop content) */}
+            {/* Process Steps Cards - shown on all screens (mobile-only originally; now also below desktop infinity for richer desktop content) */}
             <section
                 id="lifecycle"
                 className="pt-20 md:pt-2 pb-16 px-4 bg-gradient-to-b from-[#050505] to-black"
             >
                 <div className="max-w-lg md:max-w-6xl mx-auto">
-                    {/* Section Header — only on mobile (desktop already has the H2 above) */}
+                    {/* Section Header - only on mobile (desktop already has the H2 above) */}
                     <div className="text-center mb-10 md:hidden">
                         <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
                             Turn customer data into{" "}
@@ -605,7 +605,7 @@ export const CustomerLifecycleSection = () => {
                         </p>
                     </div>
 
-                    {/* Process Steps — 1 col on mobile, 2x2 grid on desktop */}
+                    {/* Process Steps - 1 col on mobile, 2x2 grid on desktop */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {lifecycleStages.map((stage, idx) => (
                             <motion.div

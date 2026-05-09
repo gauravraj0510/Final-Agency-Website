@@ -112,7 +112,7 @@ const Founders: React.FC = () => {
         background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
       }}
     >
-      {/* Top fade — merges previous section's black bg into this section's #050505 */}
+      {/* Top fade - merges previous section's black bg into this section's #050505 */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-40 z-0 bg-gradient-to-b from-black to-transparent"
         aria-hidden="true"
@@ -181,9 +181,7 @@ const Founders: React.FC = () => {
           </h2>
 
           <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-            Two industry pioneers who left Big Tech to build something extraordinary.
-            <br className="hidden sm:block" />
-            Combined 20+ years of experience from Google, Meta, and Stanford.
+            Working together since 2021, we've shipped 130+ projects across AI, Web3, and product. We handle AI strategy, custom AI solutions, workflow automation, and full-stack web and mobile development under one roof.
           </p>
         </div>
 

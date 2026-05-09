@@ -22,7 +22,7 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 /**
- * Try popup first — if browser blocks it (COOP policy), fall back to redirect.
+ * Try popup first - if browser blocks it (COOP policy), fall back to redirect.
  */
 async function signInWithGoogle(): Promise<User | null> {
   try {

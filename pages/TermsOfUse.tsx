@@ -12,7 +12,7 @@ const TermsOfUse: React.FC = () => (
     </p>
 
     <p>
-      These Terms of Use (&ldquo;Terms&rdquo;) govern your access to and use of <strong>avelix.io</strong> (&ldquo;Site&rdquo;) operated by <strong>AVELIX PRIVATE LIMITED</strong> (&ldquo;Avelix&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;). By using the Site you agree to these Terms.
+      These Terms of Use ("Terms") govern your access to and use of <strong>avelix.io</strong> ("Site") operated by <strong>AVELIX PRIVATE LIMITED</strong> ("Avelix", "we", "us"). By using the Site you agree to these Terms.
     </p>
 
     <h2>1. Use of the Site</h2>
@@ -36,10 +36,10 @@ const TermsOfUse: React.FC = () => (
     <p>The content on this Site is for general information only. It does not constitute professional advice, business advice, legal advice, financial advice, or any other regulated advice. You should engage Avelix directly (via a signed Engagement Letter) for tailored consultation.</p>
 
     <h2>5. Disclaimer of Warranties</h2>
-    <p>The Site is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo; without warranties of any kind. Avelix does not warrant that the Site will be uninterrupted, error-free, or free from viruses.</p>
+    <p>The Site is provided "as is" and "as available" without warranties of any kind. Avelix does not warrant that the Site will be uninterrupted, error-free, or free from viruses.</p>
 
     <h2>6. Limitation of Liability</h2>
-    <p>To the maximum extent permitted by law, Avelix&rsquo;s total liability arising from your use of the Site shall not exceed &#8377;10,000 or the amount you have paid to Avelix in the preceding 12 months, whichever is greater. Avelix shall not be liable for any indirect, incidental, special, consequential, or punitive damages.</p>
+    <p>To the maximum extent permitted by law, Avelix's total liability arising from your use of the Site shall not exceed &#8377;10,000 or the amount you have paid to Avelix in the preceding 12 months, whichever is greater. Avelix shall not be liable for any indirect, incidental, special, consequential, or punitive damages.</p>
 
     <h2>7. Third-Party Links</h2>
     <p>The Site may contain links to third-party websites. Avelix does not control or endorse these and is not responsible for their content or practices.</p>

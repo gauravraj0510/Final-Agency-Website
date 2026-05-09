@@ -210,7 +210,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Companies Act §12(3)(c) + Rule 26 — Mandatory Company Info */}
+                {/* Companies Act §12(3)(c) + Rule 26 - Mandatory Company Info */}
                 <div className="mt-14 pt-8 border-t border-white/10 space-y-4">
                     <div className="space-y-1">
                         <p className="text-xs text-gray-400 font-semibold tracking-wide uppercase">Avelix Private Limited</p>

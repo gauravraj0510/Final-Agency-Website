@@ -2,7 +2,7 @@ import React from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 /**
- * Page-wide scroll progress bar — fixed gradient strip at the top
+ * Page-wide scroll progress bar - fixed gradient strip at the top
  * that fills as the user scrolls. Mounted once at the app root so
  * every route gets it for free.
  */

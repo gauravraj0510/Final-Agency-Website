@@ -32,7 +32,7 @@ function applyMetaContent(
  * and (optionally) injects per-route JSON-LD structured data scripts.
  *
  * Static fallbacks in index.html still serve social-media crawlers that
- * don't execute JS — so always keep index.html sensible. This hook gives
+ * don't execute JS - so always keep index.html sensible. This hook gives
  * client-side route navigations richer per-page metadata for users and
  * JS-aware crawlers (Googlebot, Bingbot).
  */
@@ -110,7 +110,7 @@ export function useDocumentMeta({
       restorers.push(a.restore, b.restore, c.restore);
     }
 
-    // Per-route structured data (JSON-LD) — injected then removed on unmount
+    // Per-route structured data (JSON-LD) - injected then removed on unmount
     const injectedScripts: HTMLScriptElement[] = [];
     if (structuredData && structuredData.length > 0) {
       structuredData.forEach((data) => {
