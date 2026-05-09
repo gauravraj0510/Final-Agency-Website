@@ -363,7 +363,7 @@ const Hero: React.FC = () => {
 
 
           <p className="text-base md:text-lg font-normal max-w-xl leading-relaxed mb-6 text-gray-400">
-            Tell us where you're stuck-take a quick assessment and we'll show you the next step.
+            Tell us where you're stuck by taking a quick assessment and we'll show you the next step.
           </p>
 
           <a
