@@ -260,6 +260,44 @@ const step1Items = [
     { icon: RefreshCcw, label: "Repetitive task" },
 ];
 
+// Render the rich visual content for a given stage (used by mobile cards
+// and the desktop click-to-open modal).
+const renderStageVisual = (step: number) => {
+    switch (step) {
+        case 1:
+            return (
+                <div className="grid grid-cols-2 gap-4 mt-6">
+                    <div className="flex items-center justify-center py-4">
+                        <RadarScan />
+                    </div>
+                    <div className="space-y-2">
+                        {step1Items.map((item, i) => (
+                            <motion.div
+                                key={item.label}
+                                initial={{ opacity: 0, x: 10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className="bg-black/40 border border-gray-800 rounded-lg px-3 py-2 flex items-center gap-2"
+                            >
+                                <item.icon className="w-3 h-3 text-gray-400" />
+                                <span className="text-white text-xs">{item.label}</span>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            );
+        case 2:
+            return <div className="mt-6"><CodeEditor /></div>;
+        case 3:
+            return <div className="mt-6"><IntegrationVisual /></div>;
+        case 4:
+            return <div className="mt-6"><OptimizationStatus /></div>;
+        default:
+            return null;
+    }
+};
+
 export const CustomerLifecycleSection = () => {
     const [visibleStages, setVisibleStages] = useState<number[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -360,93 +398,8 @@ export const CustomerLifecycleSection = () => {
         };
     };
 
-    // Render step card for mobile
-    const renderStepCard = (step: number) => {
-        switch (step) {
-            case 1:
-                return (
-                    <div className="grid grid-cols-2 gap-4 mt-6">
-                        <div className="flex items-center justify-center py-4">
-                            <RadarScan />
-                        </div>
-                        <div className="space-y-2">
-                            {step1Items.map((item, i) => (
-                                <motion.div
-                                    key={item.label}
-                                    initial={{ opacity: 0, x: 10 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: i * 0.1 }}
-                                    className="bg-black/40 border border-gray-800 rounded-lg px-3 py-2 flex items-center gap-2"
-                                >
-                                    <item.icon className="w-3 h-3 text-gray-400" />
-                                    <span className="text-white text-xs">{item.label}</span>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                );
-            case 2:
-                return <div className="mt-6"><CodeEditor /></div>;
-            case 3:
-                return <div className="mt-6"><IntegrationVisual /></div>;
-            case 4:
-                return <div className="mt-6"><OptimizationStatus /></div>;
-            default:
-                return null;
-        }
-    };
-
     return (
         <>
-            {/* Mobile: Process Steps Cards */}
-            <section id="lifecycle" className="md:hidden bg-[#050505] py-16 px-4">
-                <div className="max-w-lg mx-auto">
-                    {/* Section Header */}
-                    <div className="text-center mb-10">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-                            Turn customer data into{" "}
-                            <span className="text-purple-400">AI-driven growth</span>
-                        </h2>
-                        <p className="text-gray-400 text-sm">
-                            Each touchpoint is a revenue opportunity
-                        </p>
-                    </div>
-
-                    {/* Process Steps */}
-                    <div className="space-y-6">
-                        {lifecycleStages.map((stage, idx) => (
-                            <motion.div
-                                key={stage.id}
-                                initial={{ opacity: 0, y: 24 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-10% 0px" }}
-                                transition={{ duration: 0.5, delay: 0.1 * idx }}
-                                className="bg-[#0d0d0d] border border-gray-800 rounded-3xl p-6 sm:p-8"
-                            >
-                                {/* Step badge */}
-                                <span className="inline-block px-4 py-1.5 bg-[#1a1a1a] border border-gray-700 rounded-lg text-gray-400 text-sm font-medium mb-6">
-                                    Offering #{stage.id}
-                                </span>
-
-                                {/* Title */}
-                                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-                                    {stage.title}
-                                </h3>
-
-                                {/* Description */}
-                                <p className="text-gray-400 text-base leading-relaxed">
-                                    {stage.description}
-                                </p>
-
-                                {/* Visual content */}
-                                {renderStepCard(stage.id)}
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* Desktop/Tablet: Fixed scroll-driven animation */}
             <section
                 id="lifecycle-desktop"
@@ -460,7 +413,7 @@ export const CustomerLifecycleSection = () => {
                     className="bg-[#050505]"
                     style={getContentStyle()}
                 >
-                    <div className="h-full flex items-center justify-center">
+                    <div className="relative h-full flex items-center justify-center">
                         <div className="container mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                             {/* Left Content */}
                             <div className="space-y-8 text-white">
@@ -557,6 +510,110 @@ export const CustomerLifecycleSection = () => {
                                 </AnimatePresence>
                             </div>
                         </div>
+
+                        {/* Continuity arrow — sits at the bottom of the pinned DNA container */}
+                        <div
+                            className="absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-col items-center gap-2 pointer-events-none"
+                            aria-hidden="true"
+                        >
+                            {[0, 1, 2].map((i) => (
+                                <motion.svg
+                                    key={i}
+                                    width="72"
+                                    height="26"
+                                    viewBox="0 0 40 14"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{
+                                        opacity: [0, 1, 0],
+                                        y: [-10, 0, 10],
+                                    }}
+                                    transition={{
+                                        duration: 1.6,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        delay: i * 0.2,
+                                    }}
+                                    style={{
+                                        filter: "drop-shadow(0 0 14px rgba(168, 85, 247, 0.7))",
+                                    }}
+                                >
+                                    <defs>
+                                        <linearGradient
+                                            id={`chevronGradient-${i}`}
+                                            x1="0%"
+                                            y1="0%"
+                                            x2="100%"
+                                            y2="100%"
+                                        >
+                                            <stop offset="0%" stopColor="#a855f7" />
+                                            <stop offset="50%" stopColor="#c084fc" />
+                                            <stop offset="100%" stopColor="#7c3aed" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path
+                                        d="M2 2 L20 11 L38 2"
+                                        stroke={`url(#chevronGradient-${i})`}
+                                        strokeWidth="3.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        fill="none"
+                                    />
+                                </motion.svg>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Process Steps Cards — shown on all screens (mobile-only originally; now also below desktop infinity for richer desktop content) */}
+            <section
+                id="lifecycle"
+                className="pt-4 md:pt-2 pb-16 px-4 bg-gradient-to-b from-[#050505] to-black"
+            >
+                <div className="max-w-lg md:max-w-6xl mx-auto">
+                    {/* Section Header — only on mobile (desktop already has the H2 above) */}
+                    <div className="text-center mb-10 md:hidden">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                            Turn customer data into{" "}
+                            <span className="text-purple-400">AI-driven growth</span>
+                        </h2>
+                        <p className="text-gray-400 text-sm">
+                            Each touchpoint is a revenue opportunity
+                        </p>
+                    </div>
+
+                    {/* Process Steps — 1 col on mobile, 2x2 grid on desktop */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {lifecycleStages.map((stage, idx) => (
+                            <motion.div
+                                key={stage.id}
+                                initial={{ opacity: 0, y: 24 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-10% 0px" }}
+                                transition={{ duration: 0.5, delay: 0.1 * idx }}
+                                className="bg-[#0d0d0d] border border-gray-800 rounded-3xl p-6 sm:p-8"
+                            >
+                                {/* Step badge */}
+                                <span className="inline-block px-4 py-1.5 bg-[#1a1a1a] border border-gray-700 rounded-lg text-gray-400 text-sm font-medium mb-6">
+                                    Offering #{stage.id}
+                                </span>
+
+                                {/* Title */}
+                                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                                    {stage.title}
+                                </h3>
+
+                                {/* Description */}
+                                <p className="text-gray-400 text-base leading-relaxed">
+                                    {stage.description}
+                                </p>
+
+                                {/* Visual content */}
+                                {renderStageVisual(stage.id)}
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
             </section>
