@@ -373,7 +373,7 @@ const Hero: React.FC = () => {
             Take the assessment
           </a>
 
-          
+
         </div>
       </div>
     </div>

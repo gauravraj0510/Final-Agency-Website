@@ -8,7 +8,16 @@ const API_BASE =
     ? import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "")
     : "https://final-agency-website.vercel.app";
 
-const NAV_ITEMS = ['Offerings', 'Credibility', 'Case Studies'];
+interface NavItem {
+  readonly label: string;
+  readonly href: string;
+}
+
+const NAV_ITEMS: readonly NavItem[] = [
+  { label: 'Offerings', href: '/offerings' },
+  { label: 'Credibility', href: '/#credibility' },
+  { label: 'Case Studies', href: '/#case-studies' },
+];
 
 const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -86,11 +95,11 @@ const Navigation: React.FC = () => {
         <div className="hidden md:flex items-center gap-6 px-2">
           {NAV_ITEMS.map((item) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+              key={item.label}
+              href={item.href}
               className="text-sm font-medium transition-colors duration-300 text-gray-400 hover:text-white"
             >
-              {item}
+              {item.label}
             </a>
           ))}
         </div>
@@ -227,12 +236,12 @@ const Navigation: React.FC = () => {
           <nav className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                key={item.label}
+                href={item.href}
                 onClick={closeMobileMenu}
                 className="py-3 px-4 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
               >
-                {item}
+                {item.label}
               </a>
             ))}
           </nav>

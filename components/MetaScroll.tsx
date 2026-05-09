@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Box, Gauge, FileText, RefreshCcw, FileCode, Search, Settings, MessageSquare, Workflow, TrendingUp, CheckCircle2 } from 'lucide-react';
 
 // New 4-step lifecycle stages
-interface LifecycleStage {
+export interface LifecycleStage {
     id: number;
     name: string;
     title: string;
@@ -11,7 +11,7 @@ interface LifecycleStage {
     position: { x: number; y: number };
 }
 
-const lifecycleStages: LifecycleStage[] = [
+export const lifecycleStages: LifecycleStage[] = [
     {
         id: 1,
         name: "DISCOVERY",
@@ -46,7 +46,7 @@ const lifecycleStages: LifecycleStage[] = [
 const SCROLL_MULTIPLIER = 2;
 
 // Step 1: Radar Scan Animation Component
-const RadarScan = () => {
+export const RadarScan = () => {
     return (
         <div className="relative w-full aspect-square max-w-[160px] mx-auto">
             {/* Outer circle */}
@@ -87,7 +87,7 @@ const RadarScan = () => {
 };
 
 // Step 2: Code Editor Animation Component
-const CodeEditor = () => {
+export const CodeEditor = () => {
     const codeLines = [
         { indent: 0, content: <><span className="text-purple-400">def</span> <span className="text-blue-400">get_status</span><span className="text-yellow-400">(self)</span>:</> },
         { indent: 1, content: <><span className="text-purple-400">return</span> <span className="text-green-400">f"Status: {'{'}self.status{'}'}"</span></> },
@@ -159,7 +159,7 @@ const CodeEditor = () => {
 };
 
 // Step 3: Integration Animation Component
-const IntegrationVisual = () => {
+export const IntegrationVisual = () => {
     return (
         <div className="bg-[#0a0a0a] border border-gray-800/50 rounded-2xl p-8 sm:p-10">
             <div className="flex items-center justify-center gap-8">
@@ -208,7 +208,7 @@ const IntegrationVisual = () => {
 };
 
 // Step 4: Optimization Status Component
-const OptimizationStatus = () => {
+export const OptimizationStatus = () => {
     const systems = [
         { icon: MessageSquare, name: "Chatbot system", status: "Efficiency will increase by 20%", statusIcon: "loading" },
         { icon: Workflow, name: "Workflow system", status: "Update available", statusIcon: "up" },
@@ -437,6 +437,27 @@ export const CustomerLifecycleSection = () => {
                                         <p className="text-base sm:text-lg leading-relaxed text-gray-400 max-w-lg">
                                             We audit your data and workflows, automate what slows teams down, build custom AI solutions that fit your stack, and continuously optimize operations as you scale.
                                         </p>
+
+                                        <a
+                                            href="/offerings"
+                                            className="group inline-flex items-center gap-2 mt-2 rounded-full px-6 py-3 text-sm font-medium border border-white/15 text-gray-200 bg-white/[0.03] hover:bg-white/[0.06] hover:border-purple-400/40 hover:text-white transition-all duration-300"
+                                        >
+                                            Explore all offerings
+                                            <svg
+                                                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                aria-hidden
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                                />
+                                            </svg>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -570,7 +591,7 @@ export const CustomerLifecycleSection = () => {
             {/* Process Steps Cards — shown on all screens (mobile-only originally; now also below desktop infinity for richer desktop content) */}
             <section
                 id="lifecycle"
-                className="pt-4 md:pt-2 pb-16 px-4 bg-gradient-to-b from-[#050505] to-black"
+                className="pt-20 md:pt-2 pb-16 px-4 bg-gradient-to-b from-[#050505] to-black"
             >
                 <div className="max-w-lg md:max-w-6xl mx-auto">
                     {/* Section Header — only on mobile (desktop already has the H2 above) */}
@@ -614,6 +635,30 @@ export const CustomerLifecycleSection = () => {
                                 {renderStageVisual(stage.id)}
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* CTA below the cards */}
+                    <div className="mt-12 flex justify-center">
+                        <a
+                            href="/offerings"
+                            className="group inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium border border-white/15 text-gray-200 bg-white/[0.03] hover:bg-white/[0.06] hover:border-purple-400/40 hover:text-white transition-all duration-300"
+                        >
+                            Explore all offerings
+                            <svg
+                                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </section>

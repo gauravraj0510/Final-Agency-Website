@@ -15,6 +15,8 @@ import TermsOfUse from './pages/TermsOfUse';
 import GrievanceRedressal from './pages/GrievanceRedressal';
 import CookiePolicy from './pages/CookiePolicy';
 import Disclaimer from './pages/Disclaimer';
+import Offerings from './pages/Offerings';
+import ScrollProgressBar from './components/ScrollProgressBar';
 
 const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
@@ -50,10 +52,12 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <ScrollProgressBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/questionnaire" element={<QuestionnairePage />} />
         <Route path="/analysis/:docId" element={<AnalysisDashboard />} />
+        <Route path="/offerings" element={<Offerings />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfUse />} />
         <Route path="/grievance" element={<GrievanceRedressal />} />
