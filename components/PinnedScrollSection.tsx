@@ -51,44 +51,11 @@ const PinnedScrollSection: React.FC = () => {
                         0
                     );
                 }
-            } else {
-                // Mobile: stacked cards with scroll-triggered stagger fade-up
-                gsap.fromTo(
-                    centerCardRef.current,
-                    { opacity: 0, y: 30, scale: 0.95 },
-                    {
-                        opacity: 1, y: 0, scale: 1,
-                        duration: 0.7, ease: 'power2.out',
-                        scrollTrigger: { trigger: centerCardRef.current, start: 'top 90%' },
-                    }
-                );
-
-                if (leftColumnRef.current) {
-                    gsap.fromTo(
-                        leftColumnRef.current.children,
-                        { opacity: 0, y: 30 },
-                        {
-                            opacity: 1, y: 0,
-                            duration: 0.6, ease: 'power2.out',
-                            stagger: 0.12,
-                            scrollTrigger: { trigger: leftColumnRef.current, start: 'top 92%' },
-                        }
-                    );
-                }
-
-                if (rightColumnRef.current) {
-                    gsap.fromTo(
-                        rightColumnRef.current.children,
-                        { opacity: 0, y: 30 },
-                        {
-                            opacity: 1, y: 0,
-                            duration: 0.6, ease: 'power2.out',
-                            stagger: 0.12,
-                            scrollTrigger: { trigger: rightColumnRef.current, start: 'top 92%' },
-                        }
-                    );
-                }
             }
+            // Mobile: no GSAP animation — cards render naturally in their final
+            // visible state. Earlier scroll-triggered fade-ins were unreliable
+            // (cards remained invisible until scrolled fully past) so we now
+            // rely on plain rendering on mobile.
         }, containerRef);
 
         return () => ctx.revert();
