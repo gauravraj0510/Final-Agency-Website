@@ -521,7 +521,7 @@ const QuestionnairePage: React.FC = () => {
 
   if (stepState === "success") {
     return (
-      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 relative">
+      <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-start px-4 pt-28 md:pt-32 pb-16 relative">
         <PageBackground />
         <Navigation />
         <motion.div
@@ -638,7 +638,7 @@ const QuestionnairePage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 relative"
+      className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-start px-4 pt-28 md:pt-32 pb-16 relative"
       onKeyDown={handleKeyDown}
     >
       <PageBackground />
